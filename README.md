@@ -37,8 +37,8 @@ Presnejšie, prehľad operátorov v pattern-och.
 
 Najjednoduchšie zovšeobecnenie patternu. Za wildcard sa môže strčiť ľubovoľná sekvencia
 vstupu, ktorú klasifikátor nevedel vyhodnotiť lepšie. Sú štyri:
-* **#** -
+* <b>#</b> -
 * **_** -
-* ** * ** -
+* <b>*</b> -
 * **^** -
 
