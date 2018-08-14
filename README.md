@@ -49,7 +49,7 @@ a ak sú použité bezhlavo, môžu napáchať množstvo opičincov. Prekryjú t
 patterny. Ukážeme o chvíľu.
 
 V templejte je, samozrejme, možné, dostať sa ku častiam vstupu, ktoré boli namapované na wildcardy.
-Pomocou <star/> elementu.
+Pomocou &lt;star/&gt; elementu.
 
 
 ## Pattern
