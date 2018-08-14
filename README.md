@@ -39,6 +39,6 @@ Najjednoduchšie zovšeobecnenie patternu. Za wildcard sa môže strčiť ľubov
 vstupu, ktorú klasifikátor nevedel vyhodnotiť lepšie. Sú štyri:
 * **#** -
 * **_** -
-* ***** -
+* ** * ** -
 * **^** -
 
