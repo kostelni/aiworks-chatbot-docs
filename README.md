@@ -762,7 +762,8 @@ Argumenty:
 
 Táto metóda urobí, čo treba a vráti výstup ako *string* späť do template.
 
-Je to celé napísané v scale, pre javu to bude treba prispôsobiť. Hneď, ako bude treba.
+Je to celé napísané v scale, ale scala je prikompilovaná v engine, takže
+s tým nie je problém.
 
 **Príklad:**
 ```
