@@ -747,3 +747,636 @@ Každá entita obsahuje:
 * triedu: sémantická trieda, napr. farba, mesto, osoba
 * dáta: JSON, ktorý obsahuje dáta patriace entite, napr. pre mesto to môže byť počet obyvateľov, štát, geo dáta apod. Dáta sú dostupné pre kontextové ohraničenia a tiež pre generovanie odpovedí.
 * id: sémantický identifikátor, napr. konkrétna farba, mesto, osoba
+
+Automaticky extrahované dátové typy majú triedy: !number, !email, !phone-number, !date, !time
+
+### Manuálne definované entity
+
+Ak vieme identifikovať jednu konkrétnu vec pomocou rôznych patternov
+a chceme ju použiť ako špecifickú entitu, ktorá môže mať aj svoje vlastné dáta.
+
+Princíp je podobný, ako pri premapovaní kľúčových slov. Povedzme, že
+vieme ako entitu rozpoznať a.i.works. Ako entitu preto, že je to firma,
+a ako ostatné firmy má adresu, počet zamestnancov, zameranie, a podobne.
+A chceme s ňou pracovať ako s entitou, aby sme mali priamy prístup k týmto dátam.
+
+a.i.works rozpoznáme napr. pomocou patternov:
+```
+a i works
+a.i.works
+vasa firma
+firma, kde pracuje ten puk
+```
+
+Pri skladaní jednoduchých patternov zasa nechceme kombinovať:
+```
+ceo v a i works
+ceo v a.i.works
+ceo vo vasej firme
+ceo vo firme, kde pracuje ten puk
+```
+
+Chceme:
+```
+ceo v <entity id="ai-works"/>
+```
+
+
+Pri definovaní entity sa používa špeciálny typ kategórie, ktorý vyprodukuje entitu pre rôzne patterny.
+
+**Príklad:**
+Atribúty:
+* **id** je sémantické ID entity, pre tento typ je povinné
+* **type** je sémantické trieda entity
+
+Je možné definovať ľubovoľne veľa **case** prípadov, kvôli vyhodnoteniu
+**star** elementov.
+
+Ku každému **case** je možné priradiť dátový objekt, momentálne len
+tak idiotským spôsobom, ako je v príklade. Bude to lepšie.
+
+```
+<entity id="nasa-firma" type="company">
+    <case>
+        <pattern># <morph lemma="vasa"/> <morph lemma="firma"/> ^</pattern>
+        <pattern># <morph lemma="firma"/> [KDE, V KTOREJ] ^ JE PETER ^</pattern>
+        <pattern># <morph lemma="firma"/> ^</pattern>
+        <object>
+            <object-field name="name">
+                nasa firma
+            </object-field>
+            <object-field name="info">
+                <object>
+                    <object-field name="address">
+                    nasa addresa
+                    </object-field>
+                    <object-field name="employees">
+                    3
+                    </object-field>
+                </object>
+            </object-field>
+        </object>
+    </case>
+</entity>
+```
+
+**!!!!!!** Mechanizmus pre definíciu patternov je úplne voľný, je možné použiť ľubovoľné patterny, ale odporučenie je:
+** PATTERN MÁ AKO PRVÝ OPERÁTOR VŽDY # A AKO POSLEDNÝ TIEŽ WILDCARD, IDEÁLNE # ALEBO ^ . **
+Týmto sa zabezpečí správna produkcia entity.
+
+### Entita v patterne
+
+Element: &lt;entity&gt;
+Atribúty:
+* *id* - sémantický typ
+* *type* - sémantická trieda
+
+Všetky typy entít sú v patterne rozpoznateľné rovnakým spôsobom. Životnosť entity
+je len jeden request. Každý request, samozrejme, produkuje iné entity.
+
+**Príklad:**
+
+```
+<category>
+    <pattern>POZNAS <entity id="nasa-firma"/></pattern>
+    <template>
+        zas tychto? hej, poznam
+    </template>
+</category>
+
+<category>
+    <pattern>POZNAS <entity type="!number"/></pattern>
+    <template>
+        hej, to je cislo
+    </template>
+</category>
+
+Dialog:
+U: poznas ai works
+B: zas tychto? hej, poznam
+
+U: poznas 4,56
+B: hej, to je cislo
+```
+
+### Entita v template
+
+
+Entita je objekt, pracuje sa s ňou zábavnejšie, keďže máme prístup k jej dátovej
+časti.
+
+Podobne ako u premenných **get/set**, entita môže mať rovnako scope:
+* **var** - platný pre aktuálne vyhodnotenie template
+* **name** - entita je uložená do kontextovej pamäte a má platnosť pre celý dialóg (alebo do manuálneho prepísania/zrušenia)
+
+Práca s entitou umožňuje prístup do jej dátovej časti, tá môže byť použitá na generovanie
+odpovede, ale rovnako dobre pre rozhodovacie procesy alebo vstup pre externé servisy.
+
+Entita sa vždy nastavuje zo **star** odchyteného patternu, je treba dávať pozor,
+aby bolo nastavenie zo správneho **star**.
+
+**Príklad:**
+
+Práca s entitou .. postup:
+
+```
+<category>
+    <pattern>POZNAS <entity id="nasa-firma"/></pattern>
+    <template>
+
+        1. nastavenie entity do premennej
+
+        do kontextu:
+        <set-entity name="x"><star index="1"/></set-entity>
+
+        lokalne pre tento template:
+        <set-entity var="y"><star index="1"/></set-entity>
+
+        2. praca s entitou
+           - entita je vzdy adresovana cez premennu
+           - pre pristup k datam sa nezmyselne pouziva
+             atribut "data"
+
+        zakladna semantika:
+        ID: <entity name="x" data="id"/>
+        TYPE: <entity name="x" data="type"/>
+
+        kompletny dump dat:
+        JSON: <entity name="x" data="json"/>
+
+        pre pristup ku konkretnej datovej casti
+        sa pouziva JSONPath standard
+        NAME: <entity name="x" data="$.name"/>
+        ADDRESS: <entity var="x" data="$.info.address"/>
+
+    </template>
+</category>
+```
+
+## KONTEXT
+
+Rozhodovanie v kontexte. Jednoducho povedané, rovnaká otázka si za rôznych
+okolností vyžaduje rôzne odpovede.
+
+Sú k dispozícii tri typy kontextových mechanizmov.
+
+### Topic
+
+Nastavenie témy. Systémový kontext, kategórie je možne organizovať podľa
+témy. Rovnaký pattern bude mať pre rôzne tématické oblasti rôznu odpoveď. Ak je téma
+nastavená, platí, kým nie je manuálne zmenená alebo odstránená.
+
+**Priklad:**
+```
+// nastavenie temy na ai works:
+<category>
+    <pattern>POZNAS A.I.WORKS?</pattern>
+    <template>
+        <set name="topic">aiworks</set>
+
+        co furt s tymito?
+    </template>
+</category>
+
+// otazka mimo topic:
+<category>
+    <pattern>KOLKO MAJU ZAMESTNANCOV?</pattern>
+    <template>
+        kolko ma zamestnancov kto?
+    </template>
+</category>
+
+// otazky v ramci topic:
+<topic name="aiworks">
+    <category>
+        <pattern>KOLKO MAJU ZAMESTNANCOV?</pattern>
+        <template>
+            ai works nema zamestnancov .. su oni vobec?
+        </template>
+    </category>
+</topic>
+
+Dialog:
+U: kolko maju zamesntancov?
+B: kolko ma zamestnancov kto?
+
+U: poznas ai works?
+B: co furt s tymito?
+
+U: kolko maju zamesntancov?
+B: ai works nema zamestnancov .. su oni vobec?
+```
+
+### Triggers
+
+Okamžité kontextové triggre so životnosťou pre nasledujúci request,
+potom zmiznú. Sú vhodné pre bezprostredné riadenie jednoduchého dialógu.
+
+Kategória produkuje okamžitý kontext pomocou atribútu **context="ciarkou oddeleny zoznam produkovanych triggrov"**.
+
+Kategória vyhodnocuje kontext pomocou elementu **context/triggers**,
+obsah je čiarkou oddelený zoznam okamžitých triggrov, ktoré musia platiť, aby
+platila kategória.
+
+```
+<category>
+    <pattern>...</pattern>
+    <context>
+        <triggers></triggers>
+    </context>
+    <template>
+    </template>
+</category>
+```
+
+**Priklad:**
+
+```
+<category context="viac-o-aiworks">
+    <pattern>POZNAS A.I.WORKS?</pattern>
+    <template>
+        co furt s tymito?
+        chces o nich vediet viac?
+    </template>
+</category>
+
+// otazka mimo kontext
+<category>
+    <pattern>ANO</pattern>
+    <template>
+        co ano?
+    </template>
+</category>
+
+// otazka v kontexte
+<category>
+    <pattern>ANO</pattern>
+    <context>
+        <triggers>viac-o-aiworks</triggers>
+    </context>
+    <template>
+        ai works su bla bla
+    </template>
+</category>
+
+Dialog:
+U: ano?
+B: co ano?
+
+U: poznas ai works?
+B: co furt s tymito?
+   chces o nich vediet viac?
+
+U: ano
+B: co furt s tymito?
+   ai works su bla bla
+
+U: ano?
+B: co ano?
+```
+
+**Priklad:**
+Kombinácia topic a triggrov.
+
+```
+    // pomocne kategorie
+    <category>
+        <pattern>unset</pattern>
+        <template>
+            unsetting topic : <get name="topic"/>
+            <unset name="topic"/>
+        </template>
+    </category>
+
+    <category><pattern>set *</pattern>
+        <template>
+            <set name="topic"><star/></set>
+            topic set to: <star/>
+        </template>
+    </category>
+
+    <category context="ctx">
+        <pattern>^ ctx ^</pattern>
+        <template>
+            OK .. CONTEXT WAS SET
+        </template>
+    </category>
+
+    // vyznamove kategorie
+    <topic name="topic one">
+        <category name="topic-1-hi">
+            <pattern>hi</pattern>
+            <template>TOPIC ONE HI!</template>
+        </category>
+    </topic>
+
+    <topic name="topic two">
+        <category name="topic-2-hi">
+            <pattern>hi</pattern>
+            <template>TOPIC TWO HI!</template>
+        </category>
+        <category name="topic-2-ctx-hi">
+            <pattern>hi</pattern>
+            <context><triggers>ctx</triggers></context>
+            <template>TOPIC TWO + CONTEXT HI!</template>
+        </category>
+    </topic>
+
+    <category name="ctx-hi">
+        <pattern>hi</pattern>
+        <context><triggers>ctx</triggers></context>
+        <template>CONTEXT HI!</template>
+    </category>
+
+    <category name="default-hi">
+        <pattern>hi</pattern>
+        <template>DEFAULT HI!</template>
+    </category>
+
+    <category name="default">
+        <pattern>*</pattern>
+        <template>DEFAULT</template>
+    </category>
+
+Dialog:
+U: hi
+B: DEFAULT HI
+
+U: set topic one
+B: topic set to: topic one
+
+U: hi
+B: TOPIC ONE HI!
+
+U: ctx
+B: OK .. CONTEXT WAS SET
+
+U: hi
+B: TOPIC ONE HI!
+
+U: set topic two
+B: topic set to: topic two
+
+U: hi
+B: TOPIC TWO HI!
+
+U: ctx
+B: OK .. CONTEXT WAS SET
+
+U: hi
+B: TOPIC TWO + CONTEXT HI!
+
+U: hi
+B: TOPIC TWO HI!
+
+U: unset
+B: unsetting topic : topic two
+
+U: hi
+B: DEFAULT HI!
+```
+
+### Kontextové ohraničenia
+
+Blok ohraničení, ktoré určujú okolnosti za akých je kategória platná.
+Ohraničenia sú vždy vyhodnocované ako logický **AND**.
+
+Kategória vyhodnocuje kontext pomocou elementu **context/triggers**
+a zároveň zoznamu dodatočných ohraničení, ktoré sú definované v elemente **context**.
+
+Element **context** nesmie byť prázdny, musí obsahovať aspoň **triggers** a/alebo
+iné ohraničenia. Samozrejme, blok **triggers** nie je povinný, ak sú definované viaceré ohraničenia.
+
+**Príklad:**
+
+```
+<category>
+    <context>
+        // ---------------------------------
+        // EXISTENCIA V KONTEXTOVEJ PAMATI
+        // ---------------------------------
+        // v kontextovej pamati existuje premenna X
+        <property name="x"/>
+
+        // v kontextovej pamati existuje entita X
+        <entity name="x"/>
+
+
+        // ---------------------------------
+        // EXISTENCIA V KONTEXTOVEJ PAMATI
+        // A TEST HODNOTY
+        // ---------------------------------
+        // v kontextovej pamati je premenna X
+        // a jej hodnota je 5
+        <property name="x">5</property>
+
+        // v kontextovej pamäti existuje entita X
+        // a jej typ je "type"
+        <entity name="x" data="type">type</entity>
+
+        // v kontextovej pamäti existuje entita X
+        // a jej id je "instance"
+        <entity name="x" data="id">instance</entity>
+
+        // v kontextovej pamäti existuje entita X
+        // a jej adresovana datova zlozka ma hodnotu 5
+        <entity name="x" data="$.info.price">5</entity>
+
+    </context>
+</category>
+```
+
+Pre testovanie hodnoty je možné použiť zložitejší logický výraz.
+* Premenná v logickom výraze sa zapisuje ako **${meno-premennej}**
+* Operátory: **==** , **!=** , **>** , **<** , **>=** , **<=**
+* Logické operátory: **and** , **or**
+* Logická formula môže obsahovať časti zabalené do zátvoriek
+* Ak bola do kontextovej pamäti uložená premenná s menom **premenna**,
+do ${variable} sa dosadí hodnota tejto premennej
+
+**Príklad:**
+```
+(
+    ( (${x}>=5 and ${x}<=10) or ${y}!=7 )
+    and
+    (${z}>=5 and ${z}<=10)
+)
+```
+
+Logické výrazy je možné použiť pre vyhodnotenie konkrétnej premennej:
+```
+<category>
+    <context>
+        // TEST HODNOTY PREMENNEJ
+        // premenna, ktora obsahuje hodnotu premennej X
+        // je v logickej klauzule dostupna v premennej ${value}
+        <property name="x">
+            <![CDATA[
+            ${value}<=20
+            ]]>
+        </property>
+
+        // TEST DATOVEJ ZLOZKY ENTITY
+        // premenna, ktora obsahuje hodnotu datovej zlozky "$.info.price"
+        // je v logickej klauzule dostupna v premennej ${value}
+        <entity name="x" data="$.info.price">
+            <![CDATA[
+            ${value}>=20 and ${value}<=30
+            ]]>
+        </property>
+    </context>
+</category>
+```
+
+**Príklad:**
+
+Máme chatota, ktorý odpovedá otázky o hrách. Hry
+sú reprezentované ako pomenované entity. Každá obsahuje dátovú časť v tvare:
+```
+{
+    "name": "meno hry",
+    "price": cena,
+    "genre": [strielacka, strategia, ...]
+}
+```
+
+Cheme dialóg:
+```
+U: poznas csko?
+B: jasne, poznam counter strike
+
+U: kolko stoji
+B: counter strike stoji 30EUR
+
+U: poznas takeho nit
+B: takeho nit? take nepoznam
+
+U: kolko stoji?
+B: kolko stoji co?
+
+U: prince
+B: prince stoji 10EUR
+```
+
+Ak sa používateľ nesmelo spýta na hru, chabot, ak hru pozná, uloží si ju do
+kontextovej pamäte, táto hra bude náš aktuálny kontext.
+Pri každej kontextovej otázke chatbot musí overiť, či je kontext nastavený
+na hru, ak áno, vie pracovať s hrou, ktorá je nastavená ako kontextová téma.
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aiml version="1.0">
+
+    // POZNAS HRU
+    <category>
+        <pattern>POZNAS ^ <entity type="game"/> ^</pattern>
+        <template>
+            // NASTAVIME ENTITU DO KONTEXTU
+            <set-entity name="game"><star index="2"/></set-entity>
+
+            jasne, poznam hru [<entity name="game" data="$.name"/>]
+        </template>
+    </category>
+
+    // POZNAS DEFAULT
+    <category>
+        <pattern>POZNAS *</pattern>
+        <template>
+            // VYSMARIME ENTITU Z KONTEXTU
+            <unset name="game"/>
+            <star index="1"/>? take nepoznam
+        </template>
+    </category>
+
+    // KOLKO STOJI HRA O KTOREJ SA BAVIME
+    <category>
+        <pattern>KOLKO STOJI</pattern>
+        <context>
+            <entity name="game"/>
+        </context>
+        <template>
+            <entity name="game" data="$.name"/> stoji <entity name="game" data="$.price"/>
+        </template>
+    </category>
+
+    // KOLKO STOJI DEFAULT
+    // NASTAVI KONTEXTOVY TRIGGER, AK V DALSEJ ODPOVEDI
+    // PRIDE HRA, ODPOVIE NA OTAZKU: KOLKO STOJI HRA
+    <category context="kolko-stoji-hra">
+        <pattern>KOLKO STOJI</pattern>
+        <template>
+            kolko stoji co?
+        </template>
+    </category>
+
+
+    // GENERICKY SPUSTAC: HRA
+    <category>
+        <pattern>^ <entity type="game"/> ^</pattern>
+        <template>
+            <set-entity name="game"><star index="2"/></set-entity>
+            ok .. bavime sa o hre [<entity name="game" data="$.name"/>]
+        </template>
+    </category>
+
+    // KONTEXTOVY SPUSTAC: HRA
+    <category>
+        <pattern>^ <entity type="game"/> ^</pattern>
+        <context>
+            <triggers>kolko-stoji-hra</triggers>
+        </context>
+        <template>
+            <set-entity name="game"><star index="2"/></set-entity>
+            <srai>KOLKO STOJI</srai>
+        </template>
+    </category>
+
+</aiml>
+```
+
+### Kategórie v kontexte
+
+Kontext znamená na rovnakú otázku odpovedať inak podľa aktuálnych okolností.
+Zapisovať vždy novú kategóriu pre každý nový kontext je dláždenie si cesty do pekla.
+Totiž, ak znalostná báza dosiahne rozmery úctyhodného charakteru,
+nie je nič jednoduchšie, ako stratiť sa v nej. Aj keď je zosnovaná vlastnoručne.
+
+Preto je možné dať dohromady reakcie na rovnaký pattern (alebo skupinu patternov).
+Jeden pattern, defaultný template, a potom reakcie pre rôzne kontexty. Ten
+zápis vyzerá takto:
+```
+<category>
+    <pattern>^ <entity type="game"/> ^</pattern>
+
+    // KONTEXT 1
+    <context>
+        <triggers></triggers>
+        <property/>
+        .. ohranicenia
+
+        <template>
+            TEMPLATE PRE KONTEXT 1
+        </template>
+    </context>
+
+
+    // KONTEXT 2
+    <context>
+        <triggers></triggers>
+        <property/>
+        .. ohranicenia
+
+        <template>
+            TEMPLATE PRE KONTEXT 2
+        </template>
+    </context>
+
+    .. dalsie kontexty
+
+    <template>
+        DEFAULTNY TEMPLATE
+    </template>
+    </category>
+```
+
