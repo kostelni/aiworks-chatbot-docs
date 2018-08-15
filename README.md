@@ -753,13 +753,12 @@ eu.aiworks.chatbot.service.ExternalServiceWrapper
 
 Tento interface predpisuje metódu:
 ```
-def process(content: String, brain: BotBrain, indent: Int): Option[String]
+def process(content: String, brain: BotBrain): scala.Option[String]
 ```
 
 Argumenty:
 * **content**: hodnota odoslaná do servisu z template, nemá žiadne obmedzenia, môže to byť string, json, xml, čokoľvek
 * **brain**: kompletný prístup k statickej a kontextovej pamäti
-* **indent**: zabudnutý debugovací parameter pre intentáciu textu
 
 Táto metóda urobí, čo treba a vráti výstup ako *string* späť do template.
 
@@ -1279,14 +1278,7 @@ do **${variable}** sa dosadí hodnota tejto premennej
 
 **Príklad:**
 ```
-(
-    (
-        ( ${x}>=5 and ${x}<=10 )
-        or ${y}!=7
-    )
-    and
-    ( ${z}>=5 and ${z}<=10 )
-)
+(((${x}>=5 and ${x}<=10) or ${y}!=7) and (${z}>=5 and ${z}<=10))
 ```
 
 Logické výrazy je možné použiť pre vyhodnotenie konkrétnej premennej:
