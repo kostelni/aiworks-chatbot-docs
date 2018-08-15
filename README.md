@@ -301,7 +301,7 @@ Presnejšie, prehľad operátorov v pattern-och.
 
 Zjednodušuje zápis patternu, ak potrebujeme kombinovať viac možných
 operátorov. Zápis:
-* **hranaté zátvorky**: ohraničujú výrazy, ktoré budú kombinované, môžu byť vnorené
+* **hranaté zátvorky**: ohraničujú výrazy, ktoré budú kombinované
 * **obsah v hranatých zátvorkách**: čiarkou oddelené výrazy, ktoré budú kombinované, špeciálny výraz **-** znamená, že kombinátor vygeneruje kombináciu bez možnosti v zátvorkách
 
 Pattern kombinátor vytvorí veľa možných jazykových vzorov z jediného patternu.
@@ -314,14 +314,8 @@ A D
 A B D
 A C D
 
-A [-, B, [C, D]] E
-generuje:
-A E
-A B E
-A C E
-A D E
 
-A [-, [B, C]] [D, E] F
+A [-, B, C] [D, E] F
 generuje:
 A  D F
 A  E F
