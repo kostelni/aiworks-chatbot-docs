@@ -25,6 +25,9 @@ ChatBot má zľahka netriviálnu sekvenciu pre spracovanie textového vstupu:
 
 Heuristický sentence splitter. ChatBot postupne vyhodnotí
 každú rozpoznanú vetu osobitne, v sekvencii, ako sa vety objavili v texte.
+Jeden vstup teda môže obsahovať viac viet, ChatBot postupne odpovie na všetky.
+Platí to pre vety oddeliteľné koncovými značkami ako bodka, otáznik, výkričník.
+Neplatí to, samozrejme, pre súvetia.
 
 ### 2. Extrakcia základných dátových typov
 
@@ -314,13 +317,11 @@ platí, ak je operátor koreňom slova na vstupe. Namapuje sa do **star**.
     <pattern>^ <stem>POZNA</stem> ^</pattern>
     <template>
         slovo, pre ktore koren zabral: [<star index="2"/>]
-        koren, ktory zabral: [<star index="2" matched-item="true"/>]
     </template>
 </category>
 
 U: nepoznas
 B: slovo, pre ktore koren zabral: [nepoznas]
-   koren, ktory zabral: [pozna]
 
 ```
 
@@ -584,13 +585,12 @@ kdekolvek pocas dialogu
 
 Likvidácia premennej:
 ```
-<unset var="x"/>
 <unset name="y"/>
 ```
 
 ### Conditional
 
-Element: &lt;condition name/var="premenna"/&gt;
+Element: **&lt;condition name/var="premenna"/&gt;**
 
 Jednoduchý **case**, ktorý dostane na vstup premennú a reaguje podľa jej hodnoty.
 Premenná sa berie zo scopu **var/name**.
@@ -675,7 +675,7 @@ B: porovnavam .. X=[x]
 
 ### Random
 
-Element &lt;random/&gt;
+Element **&lt;random/&gt;**
 
 Zoznam rôznych odpovedí, to keď nechceme, aby chatbot odpovedal na otázku
 stále rovnako.
@@ -710,7 +710,7 @@ B: neviem, co viem
 
 ### String
 
-Element: &lt;string delimiter="del"/&gt;
+Element: **&lt;string delimiter="del"/&gt;**
 
 Jednoduchá normalizácia textu. Ak je odpoveď formálne rozhodená na viac riadkov,
 toto ju jednoducho znormalizuje. Delimiter môže byť akýkoľvek *string*.
@@ -737,7 +737,7 @@ vrati: xx xx yy zz
 
 ### Externé servisy
 
-Elementy: &lt;sraix/&gt; a &lt;serivce/&gt;
+Elementy: **&lt;sraix/&gt;** a **&lt;serivce/&gt;**
 
 Do templejtu je možné injektovať ľubovoľnú externú logiku. Tým pádom nie je skoro
 žiadne obmedzenie na integráciu s ľubovoľným externým systémom.
@@ -886,8 +886,9 @@ tak idiotským spôsobom, ako je v príklade. Bude to lepšie.
 </entity>
 ```
 
-**!!!!!!** Mechanizmus pre definíciu patternov je úplne voľný, je možné použiť ľubovoľné patterny, ale odporučenie je:
-** PATTERN MÁ AKO PRVÝ OPERÁTOR VŽDY # A AKO POSLEDNÝ TIEŽ WILDCARD, IDEÁLNE # ALEBO ^ . **
+**!!!!!! Každý pattern musí začínať a musí končiť wildcardom !!!!!!**
+Mechanizmus pre definíciu patternov je úplne voľný, je možné použiť ľubovoľné patterny, ale odporučenie je:
+**PATTERN MÁ AKO PRVÝ OPERÁTOR VŽDY # A AKO POSLEDNÝ TIEŽ WILDCARD, IDEÁLNE # ALEBO ^ .**
 Týmto sa zabezpečí správna produkcia entity.
 
 ### Entita v patterne
