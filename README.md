@@ -1038,6 +1038,22 @@ B: ai works nema zamestnancov .. su oni vobec?
 
 Okamžité kontextové triggre so životnosťou pre nasledujúci request,
 potom zmiznú. Sú vhodné pre bezprostredné riadenie jednoduchého dialógu.
+Prečo majú triggre životnosť jedného requestu? Pretože tak nejak to dáva zmysel.
+
+**Príklad:**
+```
+U: kolko je hodin?
+B: je 5:34
+
+// toto si vyzaduje kontext bezprostredne poslednej odpovede
+U: preco?
+B: pretoze tolko mam na hodinkach
+
+// toto si znova vyzaduje kontext bezprostredne
+// poslednej odpovede
+U: preco?
+B: neviem preco. preto.
+```
 
 Kategória produkuje okamžitý kontext pomocou atribútu **context="ciarkou oddeleny zoznam produkovanych triggrov"**.
 
