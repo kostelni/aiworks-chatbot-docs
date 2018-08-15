@@ -317,6 +317,7 @@ A C D
 A [-, B, [C, D]] E
 generuje:
 A E
+A B E
 A C E
 A D E
 
