@@ -241,7 +241,7 @@ B: co robi #NASA_FIRMA# teraz
 pridame cielovy intent
 
 <category>
-    <pattern>CO ROBI #NASA_FIRMA#</pattern>
+    <pattern>CO ROBI #NASA_FIRMA# ^</pattern>
     <template>
         Robime ultratechno!
     </template>
@@ -296,6 +296,46 @@ B: sorac, netusim, co s tym
 ## PATTERN
 
 Presnejšie, prehľad operátorov v pattern-och.
+
+### Pattern kombinátor
+
+Zjednodušuje zápis patternu, ak potrebujeme kombinovať viac možných
+operátorov. Zápis:
+* **hranaté zátvorky**: ohraničujú výrazy, ktoré budú kombinované, môžu byť vnorené
+* **obsah v hranatých zátvorkách**: čiarkou oddelené výrazy, ktoré budú kombinované, špeciálny výraz **-** znamená, že kombinátor vygeneruje kombináciu bez možnosti v zátvorkách
+
+Pattern kombinátor vytvorí veľa možných jazykových vzorov z jediného patternu.
+
+**Príklad:**
+```
+A [-, B, C] D
+generuje:
+A D
+A B D
+A C D
+
+A [-, B, [C, D]] E
+generuje:
+A E
+A C E
+A D E
+
+A [-, [B, C]] [D, E] F
+generuje:
+A  D F
+A  E F
+A  B D F
+A  B E F
+A  C D F
+A  C E F
+
+ROBI AI WORKS [CHATBOTY, EXPERTNE SYSTEMY]
+generuje:
+ROBI AI WORKS CHATBOTY
+ROBI AI WORKS  EXPERTNE SYSTEMY
+```
+
+Onedlho bude v pattern kombinátore možné použiť aj permutácie.
 
 ### Slovo
 
@@ -506,7 +546,8 @@ slovného druhu. Najčastejšie slovesa.
     ^
     <morph lemma="robit" tags="person3, inf"/>
     ^
-    <stem same-start="true">chatbot</stem> ^
+    <stem same-start="true">chatbot</stem>
+    ^
 </pattern>
 ```
 
@@ -533,7 +574,8 @@ nemôže objaviť sloveso.
     <morph-wildcard not-tags="verb" allow-empty="true"/>
     <morph lemma="robit" tags="person3, inf"/>
     <morph-wildcard not-tags="verb" allow-empty="true"/>
-    <stem same-start="true">chatbot</stem> ^
+    <stem same-start="true">chatbot</stem>
+    ^
 </pattern>
 ```
 
