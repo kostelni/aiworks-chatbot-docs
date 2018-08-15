@@ -135,11 +135,11 @@ Prvý wildcard musí obsahovať aspoň jedno slovo, druhý môže byť prázdny.
 </category>
 
 Dialóg:
-U: preco napr. xolution robi chatboty?
-B: Netusim preco napr. xolution robi chatboty
+U: preco napr. ai works robi chatboty?
+B: Netusim preco napr. ai works robi chatboty
 
-U: preco mi to xolution robi?
-B: Netusim preco xolution robi
+U: preco mi to ai works robi?
+B: Netusim preco mi to ai works robi
 ```
 
 Toto je úplne nazákladneší koncept. V skutočnosti sa skoro všetky operátory mapujú
