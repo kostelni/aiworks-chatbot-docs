@@ -1038,7 +1038,8 @@ B: ai works nema zamestnancov .. su oni vobec?
 
 Okamžité kontextové triggre so životnosťou pre nasledujúci request,
 potom zmiznú. Sú vhodné pre bezprostredné riadenie jednoduchého dialógu.
-Prečo majú triggre životnosť jedného requestu? Pretože tak nejak to dáva zmysel.
+Prečo majú triggre životnosť jedného requestu? Pretože trigger si vyžaduje
+kontext bezprostredne poslednej odpovede.
 
 **Príklad:**
 ```
@@ -1111,8 +1112,7 @@ B: co furt s tymito?
    chces o nich vediet viac?
 
 U: ano
-B: co furt s tymito?
-   ai works su bla bla
+B: ai works su bla bla
 
 U: ano?
 B: co ano?
@@ -1274,15 +1274,18 @@ Pre testovanie hodnoty je možné použiť zložitejší logický výraz.
 * Operátory: **==** , **!=** , **>** , **<** , **>=** , **<=**
 * Logické operátory: **and** , **or**
 * Logická formula môže obsahovať časti zabalené do zátvoriek
-* Ak bola do kontextovej pamäti uložená premenná s menom **premenna**,
-do ${variable} sa dosadí hodnota tejto premennej
+* Ak v kontextovej pamäti existuje premenná s menom **variable**,
+do **${variable}** sa dosadí hodnota tejto premennej
 
 **Príklad:**
 ```
 (
-    ( (${x}>=5 and ${x}<=10) or ${y}!=7 )
+    (
+        ( ${x}>=5 and ${x}<=10 )
+        or ${y}!=7
+    )
     and
-    (${z}>=5 and ${z}<=10)
+    ( ${z}>=5 and ${z}<=10 )
 )
 ```
 
