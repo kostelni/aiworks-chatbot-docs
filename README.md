@@ -7,6 +7,70 @@ zmenené a prispôsobené.
 
 NLP je riešené ako sekvenčný klasifikátor jazykových vzorov.
 
+## Mozgovňa
+
+Jadrom ChatBotieho mozgu je sekvenčný klasifikátor jazykových vzorov.
+K dispozícii je ale niekoľko ďalších znalostných blokov:
+* **statická pamäť** : slovníky, mapy, externé podporné servisy
+* **kontextová pamäť** : dynamická working memory, do ktorej je možné počas dialógu
+ukladať kontextové informácie, ako aktuálne témy, premenné, kontextové entity, apod.
+* **NER klasifikátor** : Named Entity Recognition (NER)
+* **morfologický anotátor** : komponent, ktorý pre slovám na vstupe priradí morfologické značky, ako roly (podstatné meno, sloveso, ..) a tagy (osoba, rod, číslo)
+
+## Spracovanie textu
+
+ChatBot má zľahka netriviálnu sekvenciu pre spracovanie textového vstupu:
+
+### 1. Rozdelenie textu na vety
+
+Heuristický sentence splitter. ChatBot postupne vyhodnotí
+každú rozpoznanú vetu osobitne, v sekvencii, ako sa vety objavili v texte.
+
+### 2. Extrakcia základných dátových typov
+
+Z textu sa extrahujú základné dátové jednotky, sú reprezentované ako
+pomenované entity, ku každej je priradená systémová sémantická trieda:
+* číslo (!number): 4, 45.3 , 34,3
+* email (!email): x@y.z
+* telefónne číslo (!phone-number): +421 902 123 356
+* dátum (!date): 23.5.1987
+* čas (!time): 23:44
+
+### 3. Normalizácia textu
+
+1. text sa pretransformuje na malé písmená
+2. normalizujú sa whitespaces,
+neodstraňuje sa diakritika (bude potrebná pre presnejšiu morfologickú anotáciu),
+neodstraňujú sa nealfanumerické znaky (môžu byť potrebné pre NER klasifikáciu (a.i.works))
+
+### 4. Named Entity Recognition
+
+NER klasifikátor je injektovaný, je teda možné použiť ľubovoľný klasifikátor.
+Defaultný NER klasifikátor je riešený ako Lucene index obsahujúci NER entity,
+tie sú z textu extrahované pomocou n-gramov.
+
+Slovenčina je flektívny jazyk, pri NER extrakcii je potrebné uvažovať rôzne
+morfologické tvary slov (farba: zelená, je potrebné rozpoznať aj: zelenou, zelenými, apod.).
+Defaultný NER to rieši pomocou heuristického stemmera, ktorý bol naučený
+z tvarových zmien slov v morfologickom korpuse.
+
+Na výstupe je zoznam rozpoznaných pomenovaných entít, pre každú je
+označená zodpovedajúca sekvencia textu na vstupe.
+
+### 5. Morfologická anotácia
+
+Pre každé slovo na vstupe sa extrahujú všetky dostupné morfologické značky, teda
+roly (podstatné meno, sloveso, ..) a tagy (osoba, rod, číslo).
+
+Morfologický anotátor je injektovaný, je teda možné použiť anotátor obľúbenej farby a chuti.
+
+Defaultný morfologický anotátor je riešený ako Lucene index, ktorý každému
+slovu na vstupe priradí všetky dostupné morfologické značky.
+Neodstraňuje sa viacznačnosť (lebo to ani nie je možné).
+
+Na výstupe je text reprezentovaný ako sekvencia morfologických entít,
+pre každé slovo sa kvôli normalizácii odstráni diakritika.
+
 ## Kategória/Intent
 
 Báza znalostí je modelovaná pomocou tzv. kategórií, jedna kategória reprezentuje
@@ -33,6 +97,8 @@ Napr. symbolická redukcia, reťazenie templajtov, použitie premenných, rozhod
 
 Vyhodnocovací mechanizmus hľadá vždy najdlhší známy vzor. Operátory v patternoch sú
 vyhodnocované podľa priority. Vyhráva prvý nájdený vzor s najvyššou nájdenou prioritou operátorov.
+
+
 
 ## Wildcards / Stars
 
@@ -1377,6 +1443,6 @@ zápis vyzerá takto:
     <template>
         DEFAULTNY TEMPLATE
     </template>
-    </category>
+</category>
 ```
 
