@@ -2,7 +2,7 @@
 
 ## In next version
 * simplified external service to be used from java
-* updated log file format to be chewable on windows
+* updated log file format to be chewable on windows,
     windows can not handle doubledot in file name
 * datatype extractor now recognizes also negative number
 * pattern combinator extended to handle also permutations
