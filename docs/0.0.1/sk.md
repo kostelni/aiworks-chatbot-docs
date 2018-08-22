@@ -111,8 +111,8 @@ ako sú vyhodnocované, aj v kontexte ostatných operátorov, je nasledovná:
 * <b>#</b> : 0+ slov vo vstupe
 * <b>_</b> : 1+ slov vo vstupe
 * <b>ľubovoľný iný operátor</b>
-* <b>*</b> : 0+ slov vo vstupe
-* <b>^</b> : 1+ slov vo vstupe
+* <b>^</b> : 0+ slov vo vstupe
+* <b>*</b> : 1+ slov vo vstupe
 
 S operátormi <b>#</b> a <b>_</b> treba nakladať opatrne, majú najvyššiu prioritu
 a ak sú použité bezhlavo, môžu napáchať množstvo opičincov. Prekryjú totiž všetky ostatné
