@@ -438,7 +438,8 @@ Platí, ak je v jazykovom vzore fráza, zo **set-u**.
 
 **Set** obsahuje len jednoduché frázy, bez wildcardov. Frázy môžu obsahovať
 jednoduché slová a operátory **&lt;stem&gt;** alebo **&lt;morph&gt;**.
-Frázy môžu byť viacslovné.
+Frázy môžu byť viacslovné. **Set** je jednoduchá množina (napr. synonymá), frázy nemôžu obsahovať wildcardy!
+Ak je potrebné zachytiť zložitejšie frázy, cesta je NER alebo entity.
 
 **Príklad:**
 
