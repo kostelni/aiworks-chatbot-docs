@@ -391,7 +391,7 @@ vedelo by xolution s tym blbcom pracovat
 Intent môže mať lubovoľne veľa rôznych odpovedí, každú pre rôzny &ltcontext&gt;. Defaultná odpoveď nemá
 &ltcontext&gt;. Ku kontextu sa dostaneme neskôr.
 
-### &ltwildcard index="int"&gt;
+### &lt;wildcard index="int"&gt;
 
 Vytiahne wildcard s indexom z patternu. Ak sú v patterne povnárane sekvencie, záleží na indexe vo výslednom zloženom patterne.
 
