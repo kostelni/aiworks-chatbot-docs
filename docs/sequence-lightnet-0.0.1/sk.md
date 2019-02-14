@@ -133,8 +133,14 @@ nie: v podstate čokoľvek iné
 
 ### Wildcardy
 Za wildcard sa nahradí akýkoľvek text medzi dvoma matchermi v patterne.
-* ***** : 1+ slov
-* **^** : 0+ slov
+* <b>^</b> : 0+ slov vo vstupe
+* <b>*</b> : 1+ slov vo vstupe
+
+Sekvenčný LightNet spracováva syntax komplexných slovies. Hranice pre text, ktorým sa môže naplniť wildcard je ohraničený
+pozíciou slovesa a pozíciou striktného subordinátu (podraďovacia spojka). Sloveso a podr. spojka reprezentujú
+heuristickú hranicu vety. Wildcard teda nemože obsahovať sloveso ani podraďovaciu spojku.
+
+V patterne nesmú byť dva wildcardy po sebe, N začiatku a konci patternu je dovolený len +1 wildcard <b>*</b>.
 
 ### Sekvencie
 
