@@ -140,10 +140,66 @@ Sekvenčný LightNet spracováva syntax komplexných slovies. Hranice pre text, 
 pozíciou slovesa a pozíciou striktného subordinátu (podraďovacia spojka). Sloveso a podr. spojka reprezentujú
 heuristickú hranicu vety. Wildcard teda nemože obsahovať sloveso ani podraďovaciu spojku.
 
-V patterne nesmú byť dva wildcardy po sebe, N začiatku a konci patternu je dovolený len +1 wildcard <b>*</b>.
+V patterne nesmú byť dva wildcardy po sebe, Na začiatku a konci patternu je dovolený len +1 wildcard <b>*</b>.
+
+
+### &lt;synset id=""/&gt;
+
+Synset je zoznam synoným slova.
+
+```
+<synset id="">
+    <exact>word, word, word</exact>
+    <stem same-start="true/false" same-end="true/false">word, word, </stem>
+    <role allowed="r1, r2" tags="t1, t2" rejected="r1, r2"/>
+    <lemma tags="t1, t2">word, word, word</lemma>
+</synset>
+```
+
+### Slovesá
+
+Sekvenčný LightNet je gramatika, ktorá rozpoznáva tvary slovies. V slovenčine je to ultimátne záchranné koleso,
+pretože tvary slovies sú pre syntaktický analyzátor na pozvracanie.
+
+Príklad: **chcel by si ma mať**.
+Jedno sloveso, že hej? No ale v skutočnosti tam máme slovesá tri: **chcel, si, má** + neurčitok **mať**, ktorý
+je zároveň neurčitok a zároveň môže byť podstatné meno **mať - matka**. Divočina.
+
+Gramatika heuristicky hľadá komplexné slovesá, ktoré prevádza do tvaru:
+* **aux**: rozšírenie
+* **verb**: nosné sloveso
+* **inf**: neurčitok
+
+Slovesá majú viac rôznych významov, podľa toho, či sú modálne a plno/neplnovýznamové. LightNet generuje
+všetky možnosti, na ktoré príde. Príklady.
+
+```
+sloveso: môžeš(neplnoýznamove) vidieť
+
+1. aux(môžeš) verb(vidieť)
+2. verb(môžeš) inf(vidieť)
+interpretácia: možeš vidieť, vidíš
+
+sloveso: môžeš(neplnoýznamove) chcieť(neplnovýznamové) vidieť
+
+1. aux(môžeš) verb(chcieť) inf(vidieť)
+interpretácia: možeš chcieť vidieť, chceš vidieť
+```
+
+Ak sa v slovese vyskutujú neplnovýznamové slovesá, ich význam sa prenáša.
+
+```
+môžeš vidieť = vidíš
+vidíš pracovať != pracuješ .. vidíš je plnovýznamové, neprenáša význam
+```
+
 
 ### Sekvencie
 
+Pattern je možné vybudovať zdola-nahor pomocou sekvencií, ktoré je možné
+do seba skladať. Sekvencia môže obsahovať viac rôznych patternov.
 
-Sequence LightNet je gramatika. Pattern je možné vybudovať zdola-nahor pomocou sekvencií, ktoré je možné
-do seba skladať.
+```
+<sequence id="xolution">
+</sequence>
+```
