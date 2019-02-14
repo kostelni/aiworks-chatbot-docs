@@ -109,7 +109,7 @@ trafí všetky prídavné mená v jednotnom čísle, 7. páde
 nie: v podstate čokoľvek iné
 ```
 
-**Gramatické roly: **
+**Gramatické roly:**
 * **verb**: akékoľvek sloveso
 * **vb**: sloveso - základný tvar
 * **vbd**: sloveso - minulý čas
@@ -130,6 +130,11 @@ nie: v podstate čokoľvek iné
 
 
 **Tagy:** viď **lemma**
+
+### Wildcardy
+Za wildcard sa nahradí akýkoľvek text medzi dvoma matchermi v patterne.
+* ***** : 1+ slov
+* **^** : 0+ slov
 
 ### Sekvencie
 
