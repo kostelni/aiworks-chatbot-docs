@@ -38,10 +38,23 @@
 
 ### &lt;lemma tags=""/&gt;
 
+Reaguje na základný tvar slova a gramatické tagy - rod, číslo a pád. Ak tagy nie sú definované, zaberie na akýkoľvek tvar slova.
 
 
 ```
+<lemma>robot</lemma>
+trafí všetko: robot, robota, roboti, robotov, ..
+
+<lemma tags="fall3, singular">robot</lemma>
+trafí len: robotovi
+
+
 ```
+
+**Tagy pre rod:** person1, person2, person3
+**Tagy pre číslo:** singular, plural
+**Tagy pre pád:** fall1, fall2, ..., fall7
+
 
 ### Sekvencie
 
