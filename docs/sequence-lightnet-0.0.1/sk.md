@@ -13,7 +13,6 @@
     ...
     <response/> // kontext x
 </intent>
-
 ```
 
 
@@ -33,12 +32,28 @@
     *, ^   // wildcardy
 </pattern>
 </intent>
+```
+
+### &lt;exact/&gt;
+
+Reaguje presne na toto slovo. Skratka: v patterne môže byť konkrétne slovo bez XML elementu.
 
 ```
+<pattern>
+    <exact>robot</exact>
+</pattern>
+
+je presne to isté, ako:
+
+<pattern>
+    robot
+</pattern>
+```
+
 
 ### &lt;lemma tags=""/&gt;
 
-Reaguje na základný tvar slova a gramatické tagy - rod, číslo a pád. Ak tagy nie sú definované, zaberie na akýkoľvek tvar slova.
+Reaguje na základný tvar slova a gramatické tagy - osoba, rod, číslo a pád. Ak tagy nie sú definované, zaberie na akýkoľvek tvar slova.
 
 
 ```
@@ -51,10 +66,72 @@ trafí len: robotovi
 
 ```
 
-**Tagy pre rod:** person1, person2, person3
-**Tagy pre číslo:** singular, plural
-**Tagy pre pád:** fall1, fall2, ..., fall7
+    * **Tagy pre osobu:** person1, person2, person3
+    * **Tagy pre rod:** gender-man, gender-woman, gender-neuter, gender-generic
+    * **Tagy pre číslo:** singular, plural
+    * **Tagy pre pád:** fall1, fall2, ..., fall7
 
+
+### &lt;stem same-start="true/false" same-end="true/false"/&gt;
+
+Reaguje na koreň slova a rovnaký začiatok alebo rovnaký koniec. Rovnaký začiatok a koniec nie sú povinné.
+
+
+```
+<stem>robot</lemma>
+trafí všetko: robot, nerobota, robotom
+
+<stem same-start="true>robot</lemma>
+trafí všetko s prefixom: robot, nerobota
+nie: robota
+
+<stem same-end="true>robot</lemma>
+trafí všetko so sufixom: robotovi, robote
+nie: nerobota
+```
+
+### &lt;role allowed="r1, r2" tags="t1, t2" rejected="r1, r2"/&gt;
+
+Reaguje na morfologické roly a tagy.
+
+    * **allowed: ** zoznam gramatických rolí, ktoré slovo musí mať
+    * **rejected: ** zoznam gramatických rolí, ktoré slovo nesmie mať
+    * **tags: ** zoznam morfologických tagov, ktoré slovo musí mať
+
+
+```
+<role allowed="jj" rejected="rb"/>
+trafí všetky prídavné mená, čo nie sú príslovky
+áno: pekneho, dobreho, pekny
+nie: pekne
+
+<role allowed="jj" tags="singular, fall7"/>
+trafí všetky prídavné mená v jednotnom čísle, 7. páde
+áno: peknym
+nie: v podstate čokoľvek iné
+```
+
+**Gramatické roly: **
+    * **verb**: akékoľvek sloveso
+    * **vb**: sloveso - základný tvar
+    * **vbd**: sloveso - minulý čas
+    * **vbg**: sloveso - gerundium
+    * **nn**: podstatné meno
+    * **jj**: prídavné meno
+    * **rb**: príslovka
+    * **prp**: zámeno
+    * **$prp**: privlastňovacie zámeno
+    * **cd**: číslovka
+    * **dt**: determinant
+    * **in**: predložka
+    * **q**: otázka
+    * **cc**: priraďovacia spojka
+    * **sc**: podraďovacia spojka
+    * **comma**: čiarka
+    * **any**: nerozpoznaná rola
+
+
+**Tagy: ** viď **lemma**
 
 ### Sekvencie
 
