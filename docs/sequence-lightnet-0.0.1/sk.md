@@ -193,6 +193,111 @@ môžeš/musíš/chceš/máš/... vidieť = vidíš
 vidíš pracovať != pracuješ .. vidíš je plnovýznamové, neprenáša význam
 ```
 
+**Verb matching:**
+```
+<pattern>
+    <verb>
+        // HLAVNE VYZNAMOVE SLOVESO
+        <synset>
+            <lemma>vidiet</lemma>
+        </synset>
+        // ROZSIRENIE
+        <aux>
+            <synset>
+                <lemma>moct</lemma>
+            </synset>
+        </aux>
+        // NEURCITOK
+        <inf>
+            <synset>
+                <lemma>robit</lemma>
+            </synset>
+        </inf>
+    </verb>
+</pattern>
+```
+
+Ak sloveso chceme recyklovať, definuje sa samostatne a je ready na použitie vo viacerých patternoch.
+```
+<verb id="maj-verb">
+    <synset>
+        <lemma>vidiet</lemma>
+    </synset>
+</verb>
+
+<pattern>
+    <verb id="maj-verb"/>
+</pattern>
+```
+
+**Príklady:**
+```
+<verb id="maj-verb">
+    <synset>
+        <lemma>vidiet</lemma>
+    </synset>
+</verb>
+
+trafí:
+    možeš/chceš/musíš/ .. vidieť
+    vidíš
+```
+
+```
+<verb id="maj-verb">
+    <synset>
+        <lemma>vidiet</lemma>
+    </synset>
+    <aux>
+        <synset>
+            <lemma>moct</lemma>
+        </synset>
+    </aux>
+</verb>
+
+povinný aux .. trafí:
+    možeš vidieť
+```
+
+```
+<verb id="maj-verb">
+    <synset>
+        <lemma>vidiet</lemma>
+    </synset>
+    <aux>
+        <synset>
+            <lemma>moct</lemma>
+        </synset>
+    </aux>
+    <inf>
+        <synset>
+            <lemma>robit</lemma>
+        </synset>
+    </inf>
+</verb>
+
+povinný aux aj inf .. trafí:
+    možeš vidieť robiť
+```
+
+```
+<verb id="maj-verb">
+    <synset>
+        <lemma>vidiet</lemma>
+    </synset>
+    <inf>
+        <synset>
+            <lemma>robit</lemma>
+        </synset>
+    </inf>
+</verb>
+
+nepovinný aux, povinný inf .. trafí:
+    možeš/... vidieť robiť
+    vidíš robiť
+```
+
+Zložité. Viem. Ale to len na prvé poučutie. Užitočnosť to vyváží :)
 
 ### Sekvencie
 
