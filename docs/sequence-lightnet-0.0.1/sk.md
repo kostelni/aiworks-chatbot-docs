@@ -189,7 +189,7 @@ interpretácia: možeš chcieť vidieť, chceš vidieť
 Ak sa v slovese vyskutujú neplnovýznamové slovesá, ich význam sa prenáša.
 
 ```
-môžeš vidieť = vidíš
+môžeš/musíš/chceš/máš/... vidieť = vidíš
 vidíš pracovať != pracuješ .. vidíš je plnovýznamové, neprenáša význam
 ```
 
