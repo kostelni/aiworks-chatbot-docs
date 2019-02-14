@@ -92,9 +92,9 @@ nie: nerobota
 
 Reaguje na morfologické roly a tagy.
 
-* **allowed: ** zoznam gramatických rolí, ktoré slovo musí mať
-* **rejected: ** zoznam gramatických rolí, ktoré slovo nesmie mať
-* **tags: ** zoznam morfologických tagov, ktoré slovo musí mať
+* **allowed:** zoznam gramatických rolí, ktoré slovo musí mať
+* **rejected:** zoznam gramatických rolí, ktoré slovo nesmie mať
+* **tags:** zoznam morfologických tagov, ktoré slovo musí mať
 
 
 ```
@@ -129,7 +129,7 @@ nie: v podstate čokoľvek iné
 * **any**: nerozpoznaná rola
 
 
-**Tagy: ** viď **lemma**
+**Tagy:** viď **lemma**
 
 ### Sekvencie
 
