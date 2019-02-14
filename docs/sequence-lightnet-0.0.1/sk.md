@@ -62,14 +62,12 @@ trafí všetko: robot, robota, roboti, robotov, ..
 
 <lemma tags="fall3, singular">robot</lemma>
 trafí len: robotovi
-
-
 ```
 
-    * **Tagy pre osobu:** person1, person2, person3
-    * **Tagy pre rod:** gender-man, gender-woman, gender-neuter, gender-generic
-    * **Tagy pre číslo:** singular, plural
-    * **Tagy pre pád:** fall1, fall2, ..., fall7
+* **Tagy pre osobu:** person1, person2, person3
+* **Tagy pre rod:** gender-man, gender-woman, gender-neuter, gender-generic
+* **Tagy pre číslo:** singular, plural
+* **Tagy pre pád:** fall1, fall2, ..., fall7
 
 
 ### &lt;stem same-start="true/false" same-end="true/false"/&gt;
@@ -94,9 +92,9 @@ nie: nerobota
 
 Reaguje na morfologické roly a tagy.
 
-    * **allowed: ** zoznam gramatických rolí, ktoré slovo musí mať
-    * **rejected: ** zoznam gramatických rolí, ktoré slovo nesmie mať
-    * **tags: ** zoznam morfologických tagov, ktoré slovo musí mať
+* **allowed: ** zoznam gramatických rolí, ktoré slovo musí mať
+* **rejected: ** zoznam gramatických rolí, ktoré slovo nesmie mať
+* **tags: ** zoznam morfologických tagov, ktoré slovo musí mať
 
 
 ```
@@ -112,23 +110,23 @@ nie: v podstate čokoľvek iné
 ```
 
 **Gramatické roly: **
-    * **verb**: akékoľvek sloveso
-    * **vb**: sloveso - základný tvar
-    * **vbd**: sloveso - minulý čas
-    * **vbg**: sloveso - gerundium
-    * **nn**: podstatné meno
-    * **jj**: prídavné meno
-    * **rb**: príslovka
-    * **prp**: zámeno
-    * **$prp**: privlastňovacie zámeno
-    * **cd**: číslovka
-    * **dt**: determinant
-    * **in**: predložka
-    * **q**: otázka
-    * **cc**: priraďovacia spojka
-    * **sc**: podraďovacia spojka
-    * **comma**: čiarka
-    * **any**: nerozpoznaná rola
+* **verb**: akékoľvek sloveso
+* **vb**: sloveso - základný tvar
+* **vbd**: sloveso - minulý čas
+* **vbg**: sloveso - gerundium
+* **nn**: podstatné meno
+* **jj**: prídavné meno
+* **rb**: príslovka
+* **prp**: zámeno
+* **$prp**: privlastňovacie zámeno
+* **cd**: číslovka
+* **dt**: determinant
+* **in**: predložka
+* **q**: otázka
+* **cc**: priraďovacia spojka
+* **sc**: podraďovacia spojka
+* **comma**: čiarka
+* **any**: nerozpoznaná rola
 
 
 **Tagy: ** viď **lemma**
