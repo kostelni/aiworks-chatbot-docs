@@ -1,4 +1,4 @@
-# A.I. Works ChatBot working docs - ultra fast intro
+# A.I. Works AIML ChatBot working docs - ultra fast intro
 
 Jadro modelovacieho jazyka je postavené na <a href="https://www.pandorabots.com/docs/" target="_blank">AIML</a> XML markup-e.
 
