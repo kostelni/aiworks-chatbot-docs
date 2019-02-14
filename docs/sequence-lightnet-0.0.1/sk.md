@@ -145,7 +145,7 @@ V patterne nesmú byť dva wildcardy po sebe, Na začiatku a konci patternu je d
 
 ### &lt;synset id=""/&gt;
 
-Synset je zoznam synoným slova.
+Synset je zoznam synoným slova. Musí mať ID. Jediná výnimka je, ak je synset definovaný v slovese (viď nižšie).
 
 ```
 <synset id="">
@@ -240,6 +240,8 @@ Ak sloveso chceme recyklovať, definuje sa samostatne a je ready na použitie vo
 
 trafí:
     možeš/chceš/musíš/ .. vidieť
+    možeš/chceš/musíš/ .. vidieť robiť
+    vidíš robiť
     vidíš
 ```
 
@@ -302,9 +304,65 @@ Zložité. Viem. Ale to len na prvé poučutie. Užitočnosť to vyváží :)
 ### Sekvencie
 
 Pattern je možné vybudovať zdola-nahor pomocou sekvencií, ktoré je možné
-do seba skladať. Sekvencia môže obsahovať viac rôznych patternov.
+do seba skladať. Sekvencia môže obsahovať viac rôznych patternov. Sekvencie môžu byť povnárané
+do akejkoľvek hĺbky. Puzzle.
 
 ```
-<sequence id="xolution">
-</sequence>
+    <sequence id="xolution">
+        <pattern>
+            <stem same-start="true">xolution</stem>
+        </pattern>
+        <pattern>
+            <lemma>nas</lemma>
+            <lemma>firma</lemma>
+        </pattern>
+    </sequence>
+
+    <synset id="blbec">
+        <stem same-start="true">blbec</stem>
+        <stem same-start="true">blbco</stem>
+    </synset>
+    <sequence id="bot">
+        <pattern><stem>bot</stem></pattern>
+        <pattern>
+            <synset id="blbec"/>
+        </pattern>
+    </sequence>
+
+    <verb id="pracuje3">
+        <synset>
+            <lemma tags="person3">pracovat, robit</lemma>
+        </synset>
+    </verb>
+
+    <sequence id="xolution-pracuje">
+        <pattern>
+            <sequence id="xolution"/>
+            ^
+            <verb id="pracuje3"/>
+        </pattern>
+        <pattern>
+            <verb id="pracuje3"/>
+            ^
+            <sequence id="xolution"/>
+        </pattern>
+    </sequence>
+
+    <intent id="i">
+        <pattern>
+            <sequence id="xolution-pracuje"/>
+            ^
+            <sequence id="bot"/>
+        </pattern>
+        <response>
+            trafil
+        </response>
+    </intent>
+
+Zaberie na:
+pracuje xolution s tym blbcom
+xolution moze pracovat s tym blbcom
+mohlo by xolution pracovat s tym blbcom
+vedelo by xolution s tym blbcom pracovat
+...
 ```
