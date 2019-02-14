@@ -1,4 +1,4 @@
-# A.I. Works Sequence LightNet ChatBot working docs - ultra fast intro
+# A.I. Works Sequence LightNet ChatBot
 
 
 ## Intent
@@ -15,3 +15,36 @@
 </intent>
 
 ```
+
+
+## Pattern: rozpoznanie textu
+
+```
+<pattern >
+    <lemma/>
+    <exact/>
+    <stem/>
+    <role/>
+    <entity/>
+    <synset id=".."/>
+    <sequence id=".."/>
+    <verb id=""/>
+    <verb> // anonymne sloveso definovane len v ramci patternu
+    *, ^   // wildcardy
+</pattern>
+</intent>
+
+```
+
+### <lemma tags=""/>
+
+
+
+```
+```
+
+### Sekvencie
+
+
+Sequence LightNet je gramatika. Pattern je možné vybudovať zdola-nahor pomocou sekvencií, ktoré je možné
+do seba skladať.
