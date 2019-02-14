@@ -1,7 +1,6 @@
 # A.I. Works ChatBot working docs
 
-## [CHANGELOG](docs/ChangeLog.md)
-
 ## Documentation by version
 
-* [0.0.1](docs/0.0.1/sk.md)
+* [AIML 0.0.1](docs/0.0.1/sk.md)
+* [Sequence LightNet 0.0.1](docs/sequence-light-net0.0.1/sk.md)
