@@ -415,8 +415,6 @@ B: wildcards: 1: [a] 2: [b]
 
 Funguje presne ako v AIML.
 
-### set/get
-
 Nastavenie premennej a získanie hodnoty premennej.
 Premenné je možné nastaviť v rôznom scope:
 * **var="meno premennej"** premenná žije len pre aktuálny template, keď sa template vyhodnotí, premenná zaniká
@@ -551,7 +549,7 @@ U: 2 viac ako 1
 B: 2 je viac ako 1: [true]
 ```
 
-### &lttemplate id=""&gt;
+### &lt;template id=""&gt;
 
 Často potrebujeme použiť v rôznych intentoch a rôznych kontextoch rovnakú odpoveď, len s inými "parametrami". Presne na to je template.
 Variabilný text v template sa dá vytvoriť pomocou premenných. Navyže, templejt môže mať znova koľkokoľvek
@@ -631,14 +629,12 @@ rozpoznáme napr. pomocou patternov:
 ```
 xolution
 vasa firma
-firma, kde pracuje ten puk
 ```
 
 Pri skladaní jednoduchých patternov zasa nechceme kombinovať:
 ```
 ceo v xolution
 ceo vo vasej firme
-ceo vo firme, kde pracuje ten puk
 ```
 
 Chceme:
@@ -728,6 +724,7 @@ možnosti:
 
 
 **Prístup k dátam v entite**
+
 Dáta sú vždy JSON a na prístup k nim sa vždy používa [JSONPath štandard](https://goessner.net/articles/JsonPath/).
 
 ```
@@ -742,3 +739,5 @@ Dáta sú vždy JSON a na prístup k nim sa vždy používa [JSONPath štandard]
         </response>
     </intent>
 ```
+
+## KONTEXT
