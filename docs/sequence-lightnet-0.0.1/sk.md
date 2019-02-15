@@ -80,12 +80,12 @@ Reaguje na koreň slova a rovnaký začiatok alebo rovnaký koniec. Rovnaký za�
 trafí všetko: robot, nerobota, robotom
 
 <stem same-start="true>robot</lemma>
-trafí všetko s prefixom: robot, nerobota
-nie: robota
+trafí všetko s prefixom: robot, robotxyz
+nie: nerobot
 
 <stem same-end="true>robot</lemma>
-trafí všetko so sufixom: robotovi, robote
-nie: nerobota
+trafí všetko so sufixom: nerobot, nadrobot
+nie: robotovia
 ```
 
 ### &lt;role allowed="r1, r2" tags="t1, t2" rejected="r1, r2"/&gt;
@@ -136,7 +136,7 @@ Za wildcard sa nahradí akýkoľvek text medzi dvoma matchermi v patterne.
 * <b>^</b> : 0+ slov vo vstupe
 * <b>*</b> : 1+ slov vo vstupe
 
-Sekvenčný LightNet spracováva syntax komplexných slovies. Hranice pre text, ktorým sa môže naplniť wildcard je ohraničený
+Sekvenčný LightNet spracováva syntax komplexných slovies. Text, ktorým sa môže naplniť wildcard, je ohraničený
 pozíciou slovesa a pozíciou striktného subordinátu (podraďovacia spojka). Sloveso a podr. spojka reprezentujú
 heuristickú hranicu vety. Wildcard teda nemože obsahovať sloveso ani podraďovaciu spojku.
 
@@ -161,9 +161,9 @@ Synset je zoznam synoným slova. Musí mať ID. Jediná výnimka je, ak je synse
 Sekvenčný LightNet je gramatika, ktorá rozpoznáva tvary slovies. V slovenčine je to ultimátne záchranné koleso,
 pretože tvary slovies sú pre syntaktický analyzátor na pozvracanie.
 
-Príklad: **chcel by si ma mať**.
-Jedno sloveso, že hej? No ale v skutočnosti tam máme slovesá tri: **chcel, si, má** + neurčitok **mať**, ktorý
-je zároveň neurčitok a zároveň môže byť podstatné meno **mať - matka**. Divočina.
+Príklad .. bez diakritiky: **chcel by si ma mat**.
+Jedno sloveso, že hej? No ale v skutočnosti, z pohľadu morfológie, tam máme slovesá tri: **chcel, si, má** + neurčitok **mať**, ktorý
+je zároveň neurčitok a zároveň môže byť podstatné meno **mať - matka**. Tfuj.
 
 Gramatika heuristicky hľadá komplexné slovesá, ktoré prevádza do tvaru:
 * **aux**: rozšírenie
@@ -171,7 +171,16 @@ Gramatika heuristicky hľadá komplexné slovesá, ktoré prevádza do tvaru:
 * **inf**: neurčitok
 
 Slovesá majú viac rôznych významov, podľa toho, či sú modálne a plno/neplnovýznamové. LightNet generuje
-všetky možnosti, na ktoré príde. Príklady.
+všetky možnosti, na ktoré príde.
+
+Ak sa v slovese vyskutujú neplnovýznamové slovesá, ich význam sa prenáša.
+
+```
+môžeš/musíš/chceš/máš/... vidieť = vidíš
+vidíš pracovať != pracuješ .. vidíš je plnovýznamové, neprenáša význam
+```
+
+Príklady.
 
 ```
 sloveso: môžeš(neplnoýznamove) vidieť
@@ -186,12 +195,6 @@ sloveso: môžeš(neplnoýznamove) chcieť(neplnovýznamové) vidieť
 interpretácia: možeš chcieť vidieť, chceš vidieť
 ```
 
-Ak sa v slovese vyskutujú neplnovýznamové slovesá, ich význam sa prenáša.
-
-```
-môžeš/musíš/chceš/máš/... vidieť = vidíš
-vidíš pracovať != pracuješ .. vidíš je plnovýznamové, neprenáša význam
-```
 
 **Verb matching:**
 ```
