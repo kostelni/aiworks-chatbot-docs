@@ -18,6 +18,8 @@
 
 ## PATTERN: rozpoznanie textu
 
+Operátory:
+
 ```
 <pattern >
     <lemma/>
@@ -33,6 +35,65 @@
 </pattern>
 </intent>
 ```
+
+### Pattern kombinátor
+
+Zjednodušuje zápis patternu, ak potrebujeme kombinovať a permutovať viac možných
+operátorov. Zápis:
+* **hranaté zátvorky**: ohraničujú výrazy, ktoré budú kombinované
+* **obsah v hranatých zátvorkách**: čiarkou oddelené výrazy, ktoré budú kombinované, špeciálny výraz **-** znamená, že kombinátor vygeneruje kombináciu bez možnosti v zátvorkách
+* **kučeravé zátvorky**: ohraničujú výrazy, ktoré budú permutované
+* **obsah v kučeravých zátvorkách**: čiarkou oddelené výrazy, ktoré budú permutované
+* kombinácie a permutácie môžu byť vnorené
+
+Pattern kombinátor vytvorí veľa možných variácií z jediného patternu.
+
+**Príklad:**
+```
+A [-, B, C] D
+generuje kombinácie:
+A D
+A B D
+A C D
+
+A [-, B, C] [D, E] F
+generuje kombinácie:
+A D F
+A E F
+A B D F
+A B E F
+A C D F
+A C E F
+
+A {B, C} D
+generuje permutácie:
+A B C D
+A C B D
+
+A {B, C} {D, E}
+generuje permutácie:
+A B C D E
+A B C E D
+A C B D E
+A C B E D
+
+A {B, [C, D]}
+generuje:
+A B C
+A B D
+A C B
+A D B
+
+
+{ROBI, AI WORKS} [CHATBOTY, EXPERTNE SYSTEMY]
+generuje:
+ROBI AI WORKS CHATBOTY
+ROBI AI WORKS EXPERTNE SYSTEMY
+AI WORKS ROBI CHATBOTY
+AI WORKS ROBI EXPERTNE SYSTEMY
+```
+
+Samozrejme, namiesto tých slov v príkladoch budeme kombinovať operátory.
 
 ### &lt;exact/&gt;
 
@@ -132,7 +193,7 @@ nie: v podstate čokoľvek iné
 **Tagy:** viď **lemma**
 
 ### Wildcardy
-Za wildcard sa nahradí akýkoľvek text medzi dvoma matchermi v patterne.
+Za wildcard sa nahradí akýkoľvek text medzi dvoma operátormi v patterne.
 * <b>^</b> : 0+ slov vo vstupe
 * <b>*</b> : 1+ slov vo vstupe
 
