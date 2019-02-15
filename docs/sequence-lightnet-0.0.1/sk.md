@@ -314,7 +314,7 @@ nepovinný aux, povinný inf .. trafí:
     vidíš robiť
 ```
 
-**Transformácia: komplexné sloveso -&gt; pattern**
+**Transformácia: komplexné sloveso - pattern**
 
 Komplexné sloveso môže obsahovať frázy.
 Napríklad: **mohlo by** xolution **ma** zajtra **vidieť**.
@@ -420,8 +420,8 @@ vedelo by xolution s tym blbcom pracovat
 </response>
 ```
 
-Intent môže mať lubovoľne veľa rôznych odpovedí, každú pre rôzny &ltcontext&gt;. Defaultná odpoveď nemá
-&ltcontext&gt;. Ku kontextu sa dostaneme neskôr.
+Intent môže mať lubovoľne veľa rôznych odpovedí, každú pre rôzny &lt;context&gt;. Defaultná odpoveď nemá
+&lt;context&gt;. Ku kontextu sa dostaneme neskôr.
 
 ### &lt;wildcard index="int"&gt;
 
