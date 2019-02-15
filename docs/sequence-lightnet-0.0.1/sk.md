@@ -520,10 +520,9 @@ kým sa nepoužijú všetky. Protom sa cirkus začne znova náhodne opakovať.
     <item>response 2</item>
     <item>response 3</item>
 </random>
+```
 
 Hodnota vo &lt;item&gt; môže byť akýkoľvek XML markup.
-
-```
 
 ### &lt;service&gt;
 
@@ -584,14 +583,13 @@ B: 2 je viac ako 1: [true]
 ### &lt;template id=""&gt;
 
 Často potrebujeme použiť v rôznych intentoch a rôznych kontextoch rovnakú odpoveď, len s inými "parametrami". Presne na to je template.
-Variabilný text v template sa dá vytvoriť pomocou premenných. Navyže, templejt môže mať znova koľkokoľvek
+Variabilný text v template sa dá vytvoriť pomocou premenných. Navyše, templejt môže mať znova koľkokoľvek
 rôznych odpovedí v závislosti od kontextu. Templejt je teda šablóna - parametrizovaná odpoveď
 recyklovateľná z rôznych intentov a kontextov.
 ```
 <template id="">
     <response>
         no context: default response!
-        any content node ..
     </response>
 
     <response>
@@ -625,6 +623,10 @@ recyklovateľná z rôznych intentov a kontextov.
 
         </response>
     </intent>
+
+U: go whatever
+B: Template this [whatever]
+   Ja som templejt [whatever]
 ```
 
 ## ENTITY
@@ -697,7 +699,7 @@ Napr(d):
         <pattern><lemma>vas</lemma> <lemma>firma</lemma></pattern>
 
         <data>
-            {"name" : "xolution", "address": "dzeska na tomasikovej", "x" : "x val"}
+            {"name" : "xolution", "address": "dzeska na tomasikovej"}
         </data>
     </entity>
 
@@ -760,7 +762,7 @@ odpovede, ale rovnako dobre pre rozhodovacie procesy alebo vstup pre externé se
 **&lt;entity index/var/name&gt;** prístup ku entite
 možnosti:
 * **var/name** - entita, ktorá už je uložená v premennej
-* **index** - entita z patternu, rovnaký princím, ako pri wildcarde
+* **index** - entita z patternu, rovnaký princíp, ako pri wildcarde. Entity majú samostatný index. Index je teda podarové číslo entity, nie je zmiešaný s wildcardami alebo čímkoľvek iným.
 
 **&lt;set-entity var/name&gt;** uloženie entity do premennej. Vždy sa nastavuje z **&lt;entity&gt;** elementu.
 ```
@@ -785,13 +787,18 @@ Dáta sú vždy JSON a na prístup k nim sa vždy používa [JSONPath štandard]
     <intent id="e">
         <pattern>ceo [v,vo] <entity class="company"/></pattern>
         <response>
-            ceo v <entity index="1"/>
+            ceo v o firme
 
-            name: <entity index="1" data="$.name"/>
+            meno: <entity index="1" data="$.name"/>
 
-            address: <entity index="1" data="$.address"/>
+            adresa: <entity index="1" data="$.address"/>
         </response>
     </intent>
+
+U: ceo vo vasej firme
+B: ceo v o firme
+   meno: xolution
+   adresa: dzeska na tomasikovej
 ```
 
 ## KONTEXT
