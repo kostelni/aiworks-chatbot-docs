@@ -180,6 +180,9 @@ môžeš/musíš/chceš/máš/... vidieť = vidíš
 vidíš pracovať != pracuješ .. vidíš je plnovýznamové, neprenáša význam
 ```
 
+Momentálne LightNet prenáša význam pre neplnovýznamové/modálne slovesá:
+môcť, smieť, musieť, byť, vedieť, chcieť, mať. Je to záležitosť slovníka, ak treba, stačí doplniť.
+
 Príklady.
 
 ```
@@ -241,7 +244,7 @@ Ak sloveso chceme recyklovať, definuje sa samostatne a je ready na použitie vo
     </synset>
 </verb>
 
-trafí:
+trafí: všetko, kde je nosné sloveso vidieť
     možeš/chceš/musíš/ .. vidieť
     možeš/chceš/musíš/ .. vidieť robiť
     vidíš robiť
@@ -260,8 +263,12 @@ trafí:
     </aux>
 </verb>
 
-povinný aux .. trafí:
+povinný aux .. trafí: všetko, kde je nosné sloveso a aux
+áno:
     možeš vidieť
+    možeš vidieť vidieť robiť
+nie:
+    chceš vidieť
 ```
 
 ```
@@ -282,7 +289,12 @@ povinný aux .. trafí:
 </verb>
 
 povinný aux aj inf .. trafí:
+áno:
     možeš vidieť robiť
+nie:
+    možeš vidieť písať
+    možeš vidieť
+    chceš vidieť robiť
 ```
 
 ```
@@ -301,6 +313,22 @@ nepovinný aux, povinný inf .. trafí:
     možeš/... vidieť robiť
     vidíš robiť
 ```
+
+**Transformácia komplexné sloveso -&gt; pattern**
+
+Komplexné sloveso môže obsahovať frázy.
+Napríklad: mohlo by ""**xolution** ma **zajtra** vidieť".
+Aby tieto frázy bolo možné trafiť v patterne, musia sa dostať zo slovesa von.
+Preto LightNet vyšmarí tieto frázy vždy za sloveso. Transformácia potom vyzerá takto:
+```
+tak mohlo by xolution ma zajtra vidieť na koňovi
+
+sa pretransformuje na:
+
+tak [sloveso: mohlo by vidieť] xolution ma zajtra na koňovi
+```
+
+
 
 Zložité. Viem. Ale to len na prvé poučutie. Užitočnosť to vyváží :)
 
