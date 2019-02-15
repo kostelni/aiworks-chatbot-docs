@@ -314,10 +314,11 @@ nepovinný aux, povinný inf .. trafí:
     vidíš robiť
 ```
 
-**Transformácia komplexné sloveso -&gt; pattern**
+**Transformácia: komplexné sloveso -&gt; pattern**
 
 Komplexné sloveso môže obsahovať frázy.
-Napríklad: mohlo by ""**xolution** ma **zajtra** vidieť".
+Napríklad: **mohlo by** xolution **ma** zajtra **vidieť**.
+
 Aby tieto frázy bolo možné trafiť v patterne, musia sa dostať zo slovesa von.
 Preto LightNet vyšmarí tieto frázy vždy za sloveso. Transformácia potom vyzerá takto:
 ```
