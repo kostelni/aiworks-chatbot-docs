@@ -1058,8 +1058,8 @@ B: entity [e] is set to [xolution]
 
 **Špeciálne kontextové ohraničenia**
 
-Sekvenčný LightNet chytí intent podľa definovaného pravidla, ale nerozpoznáva kontext v rámci celého vstupu.
-Táto iterácia LightNetu nemá kontext. Funguje v podsate ako gramatika. Rozpoznáva stále len sekvenčné patterny.
+Táto iterácia LightNetu chytí intent podľa definovaného pravidla, ale nerozpoznáva vetný kontext v rámci celého vstupu.
+Funguje v podsate ako gramatika. Rozpoznáva stále len sekvenčné patterny.
 
 Napr. ak chceme chytiť intent pre jednoduché **áno**, vyzeralo by to takto:
 ```
