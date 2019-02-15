@@ -802,3 +802,80 @@ B: ceo v o firme
 ```
 
 ## KONTEXT
+
+Rozhodovanie v kontexte. Jednoducho povedané, rovnaká otázka si za rôznych okolností vyžaduje rôzne odpovede.
+
+Sú k dispozícii tri typy kontextových mechanizmov: kontextové triggre a ohraničenia.
+
+### Kontextové triggre
+
+Okamžité kontextové triggre so životnosťou pre nasledujúci request,
+potom zmiznú. Sú vhodné pre bezprostredné riadenie jednoduchého dialógu.
+Prečo majú triggre životnosť jedného requestu? Pretože trigger si vyžaduje
+kontext bezprostredne poslednej odpovede.
+
+**Príklad:**
+```
+U: kolko je hodin?
+B: je 5:34
+
+// toto si vyzaduje kontext bezprostredne poslednej odpovede
+U: preco?
+B: pretoze tolko mam na hodinkach
+
+// toto si znova vyzaduje kontext bezprostredne
+// poslednej odpovede
+U: preco?
+B: neviem preco. preto.
+```
+
+Každý intent, ktorý je odpoveďou automaticky vloží ako trigger svoje vlastne **id**. Dodatočné triggre je možné
+do intentu doplniť. Takto:
+```
+<response>
+    <set-context triggers="t1, t2, .., tx"/>
+</response>
+```
+
+Príklad: použijem automaticky generovaný trigger z **id** intentu. Rovnako dobre to ale funguje aj pre manuálne
+doplnený trigger.
+```
+    <intent id="c1">
+        <pattern>
+            <verb>
+                <synset>
+                    <lemma tags="person2">poznat</lemma>
+                </synset>
+            </verb>
+            xolution
+        </pattern>
+        <response>
+            poznam xolution .. chces vediet viac?
+        </response>
+    </intent>
+
+    <intent id="c2">
+        <pattern>
+            ano
+        </pattern>
+        <response>
+            co ano?
+        </response>
+        <response>
+            <context triggers="c1"/>
+            tu poviem viac o xolution
+        </response>
+    </intent>
+
+U: ano
+B: co ano?
+
+U: poznas xolution?
+B: poznam xolution .. chces vediet viac?
+
+U: ano
+B: tu poviem viac o xolution
+
+U: ano
+B: co ano?
+```
