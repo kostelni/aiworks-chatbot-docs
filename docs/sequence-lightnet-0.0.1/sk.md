@@ -683,12 +683,34 @@ je len jeden request. Každý request, samozrejme, produkuje iné entity.
 
 **Príklad:**
 ```
-    <intent id="e">
-        <pattern>ceo [v,vo] <entity class="company"/></pattern>
-        <response>
-            ok .. ceo vo firme ..
-        </response>
-    </intent>
+<intent id="e">
+    <pattern>ceo [v,vo] <entity class="company"/></pattern>
+    <response>
+        ceo rules
+    </response>
+</intent>
+U: ceo vo vasej firme
+U: ceo v xolution
+B: ceo rules
+
+<intent id="dt1">
+    <pattern>co je <entity class="!number"/></pattern>
+    <response>
+        cislo
+    </response>
+</intent>
+<intent id="dt2">
+    <pattern>co je <entity class="!date"/></pattern>
+    <response>
+        datum
+    </response>
+</intent>
+
+U: co je 4
+B: cislo
+
+U: co je 12.11.2019
+B: datum
 ```
 
 ### Entita v response
