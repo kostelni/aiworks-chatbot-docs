@@ -879,3 +879,179 @@ B: tu poviem viac o xolution
 U: ano
 B: co ano?
 ```
+
+### Kontextové ohraničenia
+
+Blok ohraničení, ktoré určujú okolnosti za akých je intent platný.
+Ohraničenia sú vždy vyhodnocované ako logický **AND**.
+
+Element **context** nesmie byť prázdny, musí obsahovať aspoň atribút **triggers** a/alebo
+aspoň jedno ohraničenie. Samozrejme, atribút **triggers** nie je povinný, ak sú definované viaceré ohraničenia.
+
+Ako na to:
+```
+<response>
+    <context>
+
+        // PREMENNA EXISTUJE V KONTEXTOVEJ PAMATI:
+        <property name="premenna"/>
+
+        // PREMENNA EXISTUJE V KONTEXTOVEJ PAMATI A MA KONKRETNU HODNOTU:
+        <property name="premenna" value="hodnota"/>
+
+        // ENTITA EXISTUJE V KONTEXTOVEJ PAMATI:
+        <entity name="premenna"/>
+
+        // ENTITA EXISTUJE V KONTEXTOVEJ PAMATI A MA ID/CLASS:
+        <entity name="premenna" id="entity-id"/>
+        <entity name="premenna" class="entity-class"/>
+
+    </context>
+</response>
+```
+
+Príklad:
+
+```
+// MAME 2 ENTITY TYPU "company"
+
+    <entity id="ai-works" class="company">
+        <pattern>aiw</pattern>
+        <data/>
+    </entity>
+
+    <entity id="xolution" class="company">
+        <pattern>aiw</pattern>
+        <data/>
+    </entity>
+
+// PRAVIDLO PRE NASTAVENIE/VYSMARENIE PREMENNEJ A ENTITY DO/Z KONTEXTOVEJ PAMATE
+
+    <intent id="ctx-init">
+        <pattern>
+            set * <entity class="any"/>
+        </pattern>
+        <pattern>
+            set *
+        </pattern>
+        <pattern>
+            set <entity class="any"/>
+        </pattern>
+        <response>
+            <set-property name="p"><wildcard index="1"/></set-property>
+            <set-entity name="e"><entity index="1"/></set-entity>
+
+            inicializujem kontext
+
+            premenna [p]=[<property name="p"/>]
+
+            entita [e]=[<entity name="e"/>]
+        </response>
+    </intent>
+    <intent id="ctx-unset">
+        <pattern>
+            unset
+        </pattern>
+        <response>
+            <unset-property name="p"/>
+            <unset-entity name="e"/>
+
+            mazem kontext
+        </response>
+    </intent>
+
+// TEST NA PREMENNU
+
+    <intent id="ctx-p">
+        <pattern>
+            p
+        </pattern>
+        <response>
+            <context>
+                <property name="p" value="x"/>
+            </context>
+            prop [p] is set to [x]
+        </response>
+        <response>
+            <context>
+                <property name="p"/>
+            </context>
+            prop [p] exists
+        </response>
+        <response>
+            default: property [p] is not set
+        </response>
+    </intent>
+
+// TEST NA ENTITU
+
+    <intent id="ctx-e">
+        <pattern>
+            e
+        </pattern>
+        <response>
+            <context>
+                <entity name="e" id="xolution"/>
+            </context>
+            entity [e] is set to [xolution]
+        </response>
+        <response>
+            <context>
+                <entity name="e" class="company"/>
+            </context>
+            entity [e] is set to [company]
+        </response>
+        <response>
+            <context>
+                <property name="e"/>
+            </context>
+            entity [e] exists
+        </response>
+        <response>
+            default: property [p] is not set
+        </response>
+    </intent>
+
+U: p
+B: default: property [p] is not set
+
+U: set whatever
+B: inicializujem kontext
+   premenna [p]=[whatever]
+   entita [e]=[]
+
+U: p
+B: prop [p] exists
+
+U: set x
+B: inicializujem kontext
+   premenna [p]=[x]
+   entita [e]=[]
+
+U: p
+B: prop [p] is set to [x]
+
+U: set x@y.z
+B: inicializujem kontext
+   premenna [p]=[]
+   entita [e]=[set x@y.z]
+
+U: e
+B: entity [e] exists
+
+U: set aiw
+B: inicializujem kontext
+   premenna [p]=[]
+   entita [e]=[aiw]
+
+U: e
+B: entity [e] is set to [company]
+
+U: set xolution
+B: inicializujem kontext
+   premenna [p]=[]
+   entita [e]=[xolution]
+
+U: e
+B: entity [e] is set to [xolution]
+```
