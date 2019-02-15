@@ -921,7 +921,7 @@ Príklad:
     </entity>
 
     <entity id="xolution" class="company">
-        <pattern>aiw</pattern>
+        <pattern>xolution</pattern>
         <data/>
     </entity>
 
@@ -1055,3 +1055,46 @@ B: inicializujem kontext
 U: e
 B: entity [e] is set to [xolution]
 ```
+
+**Špeciálne kontextové ohraničenia**
+
+Sekvenčný LightNet chytí intent podľa definovaného pravidla, ale nerozpoznáva kontext v rámci celého vstupu.
+Táto iterácia LightNetu nemá kontext. Funguje v podsate ako gramatika. Rozpoznáva stále len sekvenčné patterny.
+
+Napr. ak chceme chytiť intent pre jednoduché **áno**, vyzeralo by to takto:
+```
+<intent id="ano">
+    <pattern>ano</pattern>
+    <response>
+        ano!
+    </response>
+</intent>
+
+U: ano
+B: ano!
+
+U: ano je nove nie
+B: ano!
+
+U: bol som vcera pre rohliky a ano, mali nejake
+B: ano!
+```
+
+Aby bolo možné rozpoznať jednoduchý kontext vstupu, existujú heuristické ohraničenia, ktoré
+zistia, či intent je jednoduchá fráza (žiadne sloveso na vstupe) alebo jednoduchá veta (žiadne iné vety).
+```
+<response>
+    <context>
+        <input-is-single-sentence/>
+    </context>
+    vstup je len jedna jedina veta, jedno nosne sloveso
+</response>
+<response>
+    <context>
+        <input-is-phrase/>
+    </context>
+    vstup je len jedna jednoducha fraza, vstup nema ziadne slovesa
+</response>
+```
+
+
