@@ -133,7 +133,6 @@ bot v odpovedi vráti session-id, ktoré klient musí použiť. v každom ďalš
     "session-id": "uuid",
     "input": "veta 1 ? veta 2 !"
 }
-
 ```
 
 #### Odpoveď
@@ -181,5 +180,148 @@ Ak nebol trafený žiaden intent, objekt **bot** je prázdny.
 Ak by sa niečo v moznovni pre daný request zdrbalo, dostaneš kľúč **error: true** a chybovú správu. This case should never happen.
 
 
+## Working Memory
 
+Informácia o aktuálnom stave kontextovej pamäte. Servis je určený len pre manuálnu kontrolu, nemám case,
+kedy by sa toto malo akokoľvek automatizovať.
 
+```
+GET: /working-memory/{session-id}
+```
+
+Pre neexistujúce **session-id**:
+```
+{
+    "error": true,
+    "reason": "bot session for uuid [session-id] does not exist!"
+}
+```
+
+Pre existujúce **session-id**:
+```
+{
+    "error": false,
+    "results": {
+        "working-memory": {
+            "entities": {
+                "entity-name": "entity.toString"
+            },
+            "properties": {
+                "property-name": "property value"
+            }
+        }
+    }
+}
+```
+
+### Preprocessor pre morfológiu a NER
+Tool, ktorý vráti výstup morfologickej analýzy a NER (Named Entity Recognition). Znova, je to tool,
+nie je určený pre automatizáciu.
+
+```
+POST: /preprocessor
+
+encoding: application/json
+
+payload:
+{
+    "session-id": "uuid",
+    "input": "slovo slovo slovo"
+}
+```
+
+* **session-id** : používaj existujúce **session-id**, inak bude bot zbytočne vytvárať nové sessions.
+    Pretože morfologický analyzátor a NER sú súčasťou existujúceho bot-a.
+* **input** : medzerou oddelený zoznam slov na analýzu.
+
+Príklad:
+```
+VSTUP:
+{
+    "session-id": "uuid",
+    "input": "robot si mala ja@tu.nie.som 21.1.2019"
+}
+
+VÝSTUP:
+{
+    "error": false,
+    "session-id": "uuid",
+    "results": {
+        "input": "robot si mala ja@tu.nie.som 21.1.2019",
+        "entities": [
+            {
+                "entity": "[EmailEntity [ff5a0d9dfab341c88acc5074281822c6] (3 - 3) [classes: List(!email)][ja@tu.nie.som] : [ja@tu.nie.som]]"
+            },
+            {
+                "entity": "[NumberEntity [f340723d8fb7484b9c76962330ebbd95] (4 - 4) [classes: List(!number)][21.1] : [21.1]]"
+            },
+            {
+                "entity": "[PhoneNumberEntity [27eb569a4b9d46d99b0061584d8d55e5] (6 - 6) [classes: List(!phone)][2019] : [2019]]"
+            }
+        ],
+        "words": [
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: nn] (lemma: Some(robot)): nn, singular, fall1, gender-man]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(robot)): nn, singular, fall5, gender-man]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(robot)): nn, singular, fall4, gender-man]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(robota)): nn, plural, fall2, gender-woman]"
+                ],
+                "word": "robot"
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: prp] (lemma: Some(si)): reflexive]",
+                    "[MorphAnnotation [role: vb] (lemma: Some(byt)): person2, vb, singular, affirmation, verb]",
+                    "[MorphAnnotation [role: prp] (lemma: Some(byt)): reflexive]",
+                    "[MorphAnnotation [role: vb] (lemma: Some(sit)): person2, vb, singular, affirmation, verb]"
+                ],
+                "word": "si"
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: jj] (lemma: Some(maly)): jj, singular, fall1, gender-woman]",
+                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): person2, singular, affirmation, gender-woman, verb, vbd]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(mala)): nn, singular, fall5, gender-woman]",
+                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): singular, affirmation, gender-woman, verb, person1, vbd]",
+                    "[MorphAnnotation [role: jj] (lemma: Some(mala)): jj, singular, fall1, gender-woman]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, singular, fall2, gender-neuter]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(mala)): nn, singular, fall1, gender-woman]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall5, gender-neuter]",
+                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): person3, singular, affirmation, gender-woman, verb, vbd]",
+                    "[MorphAnnotation [role: jj] (lemma: Some(maly)): jj, singular, fall5, gender-woman]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall1, gender-neuter]",
+                    "[MorphAnnotation [role: rb] (lemma: Some(mala)): ]",
+                    "[MorphAnnotation [role: jj] (lemma: Some(mala)): jj, singular, fall5, gender-woman]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall4, gender-neuter]"
+                ],
+                "word": "mala"
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: any] (lemma: Some(ja@tu.nie.som)): any]"
+                ],
+                "word": "ja@tu.nie.som"
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: any] (lemma: Some(21.1)): any]"
+                ],
+                "word": "21.1"
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: any] (lemma: Some(.)): any]"
+                ],
+                "word": "."
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: any] (lemma: Some(2019)): any]"
+                ],
+                "word": "2019"
+            }
+        ]
+    }
+}
+```
