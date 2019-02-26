@@ -247,16 +247,13 @@ VÝSTUP:
     "error": false,
     "session-id": "uuid",
     "results": {
-        "input": "robot si mala ja@tu.nie.som 21.1.2019",
+        "input": "robot si mala ja@tu.nie.som 26.02.2019",
         "entities": [
             {
-                "entity": "[EmailEntity [ff5a0d9dfab341c88acc5074281822c6] (3 - 3) [classes: List(!email)][ja@tu.nie.som] : [ja@tu.nie.som]]"
+                "entity": "[EmailEntity (3 - 3) [classes: List(!email)][ja@tu.nie.som] : [ja@tu.nie.som]]"
             },
             {
-                "entity": "[NumberEntity [f340723d8fb7484b9c76962330ebbd95] (4 - 4) [classes: List(!number)][21.1] : [21.1]]"
-            },
-            {
-                "entity": "[PhoneNumberEntity [27eb569a4b9d46d99b0061584d8d55e5] (6 - 6) [classes: List(!phone)][2019] : [2019]]"
+                "entity": "[DateEntity (4 - 8) [classes: List(!date)][2019-02-26] : 26 . 02 . 2019]"
             }
         ],
         "words": [
@@ -280,20 +277,20 @@ VÝSTUP:
             },
             {
                 "annotations": [
+                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall4, gender-neuter]",
                     "[MorphAnnotation [role: jj] (lemma: Some(maly)): jj, singular, fall1, gender-woman]",
-                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): person2, singular, affirmation, gender-woman, verb, vbd]",
-                    "[MorphAnnotation [role: nn] (lemma: Some(mala)): nn, singular, fall5, gender-woman]",
-                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): singular, affirmation, gender-woman, verb, person1, vbd]",
-                    "[MorphAnnotation [role: jj] (lemma: Some(mala)): jj, singular, fall1, gender-woman]",
-                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, singular, fall2, gender-neuter]",
-                    "[MorphAnnotation [role: nn] (lemma: Some(mala)): nn, singular, fall1, gender-woman]",
                     "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall5, gender-neuter]",
                     "[MorphAnnotation [role: vbd] (lemma: Some(mat)): person3, singular, affirmation, gender-woman, verb, vbd]",
-                    "[MorphAnnotation [role: jj] (lemma: Some(maly)): jj, singular, fall5, gender-woman]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(mala)): nn, singular, fall1, gender-woman]",
+                    "[MorphAnnotation [role: jj] (lemma: Some(mala)): jj, singular, fall1, gender-woman]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(mala)): nn, singular, fall5, gender-woman]",
                     "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall1, gender-neuter]",
+                    "[MorphAnnotation [role: jj] (lemma: Some(maly)): jj, singular, fall5, gender-woman]",
                     "[MorphAnnotation [role: rb] (lemma: Some(mala)): ]",
                     "[MorphAnnotation [role: jj] (lemma: Some(mala)): jj, singular, fall5, gender-woman]",
-                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, plural, fall4, gender-neuter]"
+                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): person2, singular, affirmation, gender-woman, verb, vbd]",
+                    "[MorphAnnotation [role: vbd] (lemma: Some(mat)): singular, affirmation, gender-woman, verb, person1, vbd]",
+                    "[MorphAnnotation [role: nn] (lemma: Some(malo)): nn, singular, fall2, gender-neuter]"
                 ],
                 "word": "mala"
             },
@@ -305,9 +302,21 @@ VÝSTUP:
             },
             {
                 "annotations": [
-                    "[MorphAnnotation [role: any] (lemma: Some(21.1)): any]"
+                    "[MorphAnnotation [role: any] (lemma: Some(26)): any]"
                 ],
-                "word": "21.1"
+                "word": "26"
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: any] (lemma: Some(.)): any]"
+                ],
+                "word": "."
+            },
+            {
+                "annotations": [
+                    "[MorphAnnotation [role: any] (lemma: Some(02)): any]"
+                ],
+                "word": "02"
             },
             {
                 "annotations": [

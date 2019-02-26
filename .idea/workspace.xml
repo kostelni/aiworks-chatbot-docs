@@ -62,13 +62,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="14610" />
+          <entry key="md" value="15572" />
           <entry key="txt" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="14622" />
+          <entry key="PLAIN_TEXT" value="15584" />
         </counts>
       </usages-collector>
     </session>
@@ -110,8 +110,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/docs/sequence-lightnet-0.0.1/api.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="180" column="130" selection-start-line="180" selection-start-column="130" selection-end-line="180" selection-end-column="130" />
+            <state relative-caret-position="508">
+              <caret line="261" column="39" lean-forward="true" selection-start-line="261" selection-start-column="39" selection-end-line="261" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -466,7 +466,21 @@
       <option name="project" value="LOCAL" />
       <updated>1551175106126</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="updated docs">
+      <created>1551175560947</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1551175560947</updated>
+    </task>
+    <task id="LOCAL-00037" summary="updated docs">
+      <created>1551177341739</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1551177341739</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -539,8 +553,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/sequence-lightnet-0.0.1/api.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="180" column="130" selection-start-line="180" selection-start-column="130" selection-end-line="180" selection-end-column="130" />
+        <state relative-caret-position="508">
+          <caret line="261" column="39" lean-forward="true" selection-start-line="261" selection-start-column="39" selection-end-line="261" selection-end-column="39" />
         </state>
       </provider>
     </entry>
