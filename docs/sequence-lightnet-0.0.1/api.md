@@ -137,6 +137,49 @@ bot v odpovedi vráti session-id, ktoré klient musí použiť. v každom ďalš
 ```
 
 #### Odpoveď
+```
+{
+    "error": false,
+    "session-id": "vygenerovane uuid pre konverzaciu",
+    "results": {
+        "responses": [
+            {
+                "human": "veta 1",
+                "bot": {
+                    "response": "odpoved na vetu 1",
+                    "triggers": "kontextové triggre",
+                    "intent-id": "intent:matched-id"
+                }
+            },
+            ...
+            {
+                "human": "vstup pre ktory nebol matchnuty intent",
+                "bot": {},
+            }
+        ],
+        "messages": [
+            "tu budu spravy, ktory proces kolko trval",
+            "ma to len informacnu hodnodu",
+            "klient to ma ignorovat"
+        ]
+    }
+}
+```
+
+Pre každú odpoveď je k dispozícii:
+* **human** : veta zo vstupu
+* **response** : odpoveď pre intent s najvyšším skóre
+* **intent-id** : id intentu
+* **triggers** : kontextové triggre
+
+Momentálne, kým si to celé nevysvetlíme na workshope ťa zaujíma len:
+* **human** : veta zo vstupu
+* **response** : odpoveď pre intent s najvyšším skóre
+
+Ak nebol trafený žiaden intent, objekt **bot** je prázdny.
+
+Ak by sa niečo v moznovni pre daný request zdrbalo, dostaneš kľúč **error: true** a chybovú správu. This case should never happen.
+
 
 
 
