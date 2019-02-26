@@ -239,7 +239,7 @@ Príklad:
 VSTUP:
 {
     "session-id": "uuid",
-    "input": "robot si mala ja@tu.nie.som 21.1.2019"
+    "input": "robot si mala ja@tu.nie.som 26.02.2019"
 }
 
 VÝSTUP:
