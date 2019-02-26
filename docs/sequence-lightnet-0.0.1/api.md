@@ -6,7 +6,7 @@
 URI servisu. Vždy dostupné ako:
 
 ```
-endpoint/api
+ENDPOINT/api
 
 napr. pre lokálne bežiaci tool: ENDPOINT = http://localhost:9000/api
 pre azure: ENDPOINT = http(s)://azure.wherever.runs/api
@@ -95,5 +95,48 @@ payload:
   ]
 }
 ```
+
+
+## (Cho)Bot Response
+
+### Session
+
+Core vstup/výstup. Bot si pre každú konverzáciu drží session kvôli kontextu. Session je identifikovaná
+cez automaticky generované UUID. Pri prvom pokuse o dialóg vznikne nová session, konverzácia dostane
+UUID, ktoré je pričapené ku každej odpovedi v kľúči **session-id**. Klient je povinný použiť pri
+každom requeste pridelené **session-id**. Ak klient nepoužije **session-id**, konverzácia je prekvapivo považovaná
+za novú a zakaždým sa vygeneruje nová session.
+
+**session-id** samozrejme nie je povinné pri úplne prvom pokuse klienta o konverzáciu.
+
+### Konverzácia
+
+Vstup od používateľa je heuristicky rozdelený na vety. Vety sú tu chápané ako jednoznačne
+oddelené pomocou: **? ! .**. Nie súvetia.
+
+Bot vráti odpovede na všetky otázky položené na vstupe. Pre každú vetu jednu odpoveď, aj keď
+sa pre odpoveď nenašiel žiaden intent.
+
+#### Vstup
+```
+POST: /response
+
+encoding: application/json
+
+payload pri prvom dialógu:
+{
+    "input": "veta 1 ? veta 2 !"
+}
+
+bot v odpovedi vráti session-id, ktoré klient musí použiť. v každom ďalšom dialógu potom:
+{
+    "session-id": "uuid",
+    "input": "veta 1 ? veta 2 !"
+}
+
+```
+
+#### Odpoveď
+
 
 
