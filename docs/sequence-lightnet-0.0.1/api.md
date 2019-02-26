@@ -71,3 +71,29 @@ Odpoveď pre nakonfigurované znalosti:
   }
 }
 ```
+
+### (Re)konfigurácia znalostí
+
+Momentálne je tento servis potrebné zavolať pri každom štarte WAR-ka. Nastaví cesty ku
+morfologickému a NER indexu, nastaví cesty ku adresárom so znalosťami (XML markup s intentmi)
+a reloadne aktuálny znalostný model.
+
+Ak sa obsah znalostí zmení, tento servis je potrebné použiť ako reload. Kompletne refreshne
+(cho)bot-ovi mozgovňu. Takže žiadny redeploy WAR-ka. Len tento reload.
+
+```
+POST: /config
+
+encoding: application/json
+
+payload:
+{
+  "morphology": "cesta/k/adresaru",
+  "ner": "cesta/k/adresaru",
+  "knowledge": [
+    "cesta/k/adresaru", "cesta/k/adresaru", ...
+  ]
+}
+```
+
+
