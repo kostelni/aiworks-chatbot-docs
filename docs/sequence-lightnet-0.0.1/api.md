@@ -22,8 +22,9 @@ uri: ENDPOINT/service = http(s)://azure.wherever.runs/api/service
 
 ## Konfigurácia znalostí
 
-V tomto momente je potrebné POST-nuť konfiguráciu pri každom štarte servisu (WAR-ka).
-Keď prídeme na to, ako pohodlne nastaviť env. premennú s cestou ku konfiguraku, zautomatizujeme to.
+Od verzie 0.0.5 vie servis pracovať s viacerými znalostnými bázami súčasne. Dajú sa spravovať
+dynamicky, bez reštartu servisu. Create/Update/Delete.
+
 
 ### Aktuálna konfigurácia
 
@@ -34,53 +35,18 @@ servis pre manuálnu kontrolu.
 GET: /config
 ```
 
-Odpoveď pre nenakonfigurované znalosti:
 
-```
-{
-    "error": "no knowledge"
-}
-```
 
-Odpoveď pre nakonfigurované znalosti:
-```
-{
-  "bot-config": {
-    "morphology": "cesta/k/adresaru",
-    "ner": "Some(cesta/k/adresaru)",
-    "knowledge": ["cesta/k/adresaru", "cesta/k/adresaru", ...]
-  },
-  "bot-knowledge": {
-    "configs": 2,
-    "knowledge": [
-      {
-        "layers": [
-          "phrase",
-          "verb",
-          "verbs",
-          "complex-verb",
-          "sentence"
-        ],
-        "key": "syntax"
-      },
-      {
-        "layers": ["rules"],
-        "key": "rules"
-      }
-    ]
-  }
-}
-```
+### Inicializácia servisu
 
-### (Re)konfigurácia znalostí
+Kým to nezautomatizujeme, po štarte servisu je potrebné urobiť základnú konfiguráciu.
+Tú stačí urobiť jediný raz. Potrebujeme poslať plný konfigurák. Ten musí povinne obsahovať
+len cesty ku indexom (morfologický, NER (ak sa používa)). Povinná je len cesta k morfologickému indexu.
 
-Momentálne je tento servis potrebné zavolať pri každom štarte WAR-ka. Nastaví cesty ku
-morfologickému a NER indexu, nastaví cesty ku adresárom so znalosťami (XML markup s intentmi)
-a reloadne aktuálny znalostný model.
+V konfiguráku je možné inicializovať všetky znalostné bázy, s ktorými servis pracuje. Nie je to povinné,
+dá sa to nakonfigurovať neskôr.
 
-Ak sa obsah znalostí zmení, tento servis je potrebné použiť ako reload. Kompletne refreshne
-(cho)bot-ovi mozgovňu. Takže žiadny redeploy WAR-ka. Len tento reload.
-
+Povinný prvý init po štarte servisu:
 ```
 POST: /config
 
@@ -90,14 +56,69 @@ payload:
 {
   "morphology": "cesta/k/adresaru",
   "ner": "cesta/k/adresaru",
-  "knowledge": [
-    "cesta/k/adresaru", "cesta/k/adresaru", ...
+  "knowledge-bases": [
+    {
+      "id": "volitelne id",
+      "folders": [
+        "cesta/k/adresaru",
+        "cesta/k/adresaru"
+      ]
+    },
+    {
+      "id": "volitelne id",
+      "folders": [
+        "cesta/k/adresaru",
+        "cesta/k/adresaru"
+      ]
+    }
   ]
 }
 ```
 
+Servis je nakonfigurovaný. Kotrola:
+```
+GET: /config
+```
+
+### Create/Update znalostnej bázy
+
+Za behu je možné urobiť reload existujúcej znalostnej bázy, alebo pridať novú.
+
+```
+PUT: /config
+
+encoding: application/json
+
+payload:
+{
+    "id": "volitelne id",
+    "folders": [
+        "cesta/k/adresaru",
+        "cesta/k/adresaru"
+    ]
+}
+
+```
+
+Ak znalostná báza s *id* existuje, aktualizuje sa. Ak neexistuje, doplní sa nová. Re/inicializácia
+sa urobí za behu, na servis netreba šahať.
+
+
+### Delete znalostnej bázy
+
+Za behu je možné existujúcu znalostnú bázu oddrbať zo servisu.
+
+```
+DELETE: /config/{id}
+```
+
+Znalostná báza *id* prestala v servise existovať.
+
 
 ## (Cho)Bot Response
+
+
+### Od verzie 0.0.5 musí mať JSON payload každého requestu povinné kľúče [session-id] a [kb=id znalostnej bázy]
 
 ### Session
 
@@ -125,11 +146,13 @@ encoding: application/json
 
 payload pri prvom dialógu:
 {
+    "kb": "id znalostnej bazy",
     "input": "veta 1 ? veta 2 !"
 }
 
 bot v odpovedi vráti session-id, ktoré klient musí použiť. v každom ďalšom dialógu potom:
 {
+    "kb": "id znalostnej bazy",
     "session-id": "uuid",
     "input": "veta 1 ? veta 2 !"
 }
@@ -225,11 +248,13 @@ encoding: application/json
 
 payload:
 {
+    "kb": "id znalostnej bazy",
     "session-id": "uuid",
     "input": "slovo slovo slovo"
 }
 ```
 
+* **kb** : id znalostnej bázy
 * **session-id** : používaj existujúce **session-id**, inak bude bot zbytočne vytvárať nové sessions.
     Pretože morfologický analyzátor a NER sú súčasťou existujúceho bot-a.
 * **input** : medzerou oddelený zoznam slov na analýzu.
@@ -238,6 +263,7 @@ Príklad:
 ```
 VSTUP:
 {
+    "kb": "id znalostnej bazy",
     "session-id": "uuid",
     "input": "robot si mala ja@tu.nie.som 26.02.2019"
 }
