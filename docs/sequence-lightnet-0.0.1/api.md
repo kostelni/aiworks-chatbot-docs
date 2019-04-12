@@ -40,7 +40,7 @@ GET: /config
 ### Inicializácia servisu
 
 Kým to nezautomatizujeme, po štarte servisu je potrebné urobiť základnú konfiguráciu.
-Tú stačí urobiť jediný raz. Potrebujeme poslať plný konfigurák. Ten musí povinne obsahovať
+Tú stačí urobiť jediný raz. Konfigurák musí povinne obsahovať
 len cesty ku indexom (morfologický, NER (ak sa používa)). Povinná je len cesta k morfologickému indexu.
 
 V konfiguráku je možné inicializovať všetky znalostné bázy, s ktorými servis pracuje. Nie je to povinné,
