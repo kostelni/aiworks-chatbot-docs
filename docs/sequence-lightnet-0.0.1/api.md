@@ -73,6 +73,13 @@ payload:
     }
   ]
 }
+
+ako inicializácia zaberie aj toto (znalostné bázy sa doplnia neskôr):
+payload:
+{
+  "morphology": "cesta/k/adresaru",
+}
+
 ```
 
 Servis je nakonfigurovaný. Kotrola:
